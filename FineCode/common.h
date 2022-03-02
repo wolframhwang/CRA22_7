@@ -18,3 +18,35 @@ typedef struct Employee {
     string birthday​;
     string certi​;
 }​;
+enum class CL {
+    CL1,
+    CL2,
+    CL3,
+    CL4,
+};
+enum class Grade {
+    ADV,
+    PRO,
+    EX,
+};
+struct PhoneNum {
+    int mid;
+    int end;
+};
+struct Name {
+    string first;
+    string last;
+};
+struct Date {
+    int year;
+    int month;
+    int day;
+};
+typedef struct Employee {
+    unsigned long employeeNum;
+    Name name;
+    CL cl;
+    PhoneNum phoneNum;
+    Date birthday;
+    Grade certi;
+};
