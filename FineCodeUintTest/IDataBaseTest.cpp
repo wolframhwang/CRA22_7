@@ -16,6 +16,7 @@ TEST(IDataBaseTC, IDBAdd) {
     EXPECT_EQ(db->getEmployeeInfo(20045583)->birth.month, 2);
     EXPECT_EQ(db->getEmployeeInfo(20045583)->birth.day, 14);
     EXPECT_EQ(db->getEmployeeInfo(20045583)->certi, Grade::PRO);
+    
 
     EXPECT_EQ(db->getEmployeeInfo(12345678)->name.first, "ABC");
     EXPECT_EQ(db->getEmployeeInfo(12345678)->name.last, "DEF");
