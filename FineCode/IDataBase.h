@@ -1,13 +1,13 @@
 #include <map>
-#include "Util.h"
+#include "common.h"
 
 using namespace std;
 
 struct IDataBase {
-    virtual bool add(EmployeeInfo employeeInfo);
-    virtual bool modify(int employeeNumber, EmployeeInfo employeeInfo);
-    virtual bool erase(int employeeNumber);
-    virtual EmployeeInfo* getEmployeeInfo(int employeeNumber);
+    virtual bool add(EmployeeInfo employeeInfo) = 0;
+    virtual bool modify(unsigned int employeeNumber, EmployeeInfo employeeInfo) = 0;
+    virtual bool erase(unsigned int employeeNumber) = 0;
+    virtual EmployeeInfo* getEmployeeInfo(unsigned int employeeNumber) = 0;
 };
 
 class DataBase: public IDataBase {
@@ -16,18 +16,23 @@ public:
     virtual ~DataBase() {}
 
     virtual bool add(EmployeeInfo employee) override {
-        int employeeNum = employee.employeeNumber;        
+        int employeeNum = employee.employeeNum;
         return employeesList.insert(make_pair(employeeNum, employee)).second;
     }    
     
-    virtual bool modify(int employeeNumber, EmployeeInfo employeeInfo) {
+    virtual bool modify(unsigned int employeeNumber, EmployeeInfo employeeInfo) override {
         if(employeesList.find(employeeNumber) == employeesList.end()) return false;
         employeesList[employeeNumber] = employeeInfo;
         return true;
     }
 
-    virtual bool erase(int employeeNumber) {
+    virtual bool erase(unsigned int employeeNumber) override {
         return employeesList.erase(employeeNumber);
+    }
+
+    virtual EmployeeInfo* getEmployeeInfo(unsigned int employeeNumber) override {
+        if (employeesList.find(employeeNumber) == employeesList.end()) return NULL;
+        return &employeesList[employeeNumber];
     }
     
 private:

@@ -42,7 +42,7 @@ struct Date {
     int month;
     int day;
 };
-typedef struct Employee {
+typedef struct EmployeeInfo {
     unsigned long employeeNum;
     Name name;
     CL cl;
