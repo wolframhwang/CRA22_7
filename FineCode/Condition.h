@@ -14,7 +14,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.employeeNum == employeeNum_;
 	}
 
 private:
@@ -28,7 +28,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.name.first == first_;
 	}
 
 private:
@@ -42,7 +42,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.name.last == last_;
 	}
 
 private:
@@ -56,7 +56,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return nameFirst.isEqual(employee) && nameLast.isEqual(employee);
 	}
 
 private:
@@ -71,7 +71,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.cl == cl_;
 	}
 
 private:
@@ -85,7 +85,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.phoneNum.mid == mid_;
 	}
 
 private:
@@ -99,7 +99,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.phoneNum.end == end_;
 	}
 
 private:
@@ -113,7 +113,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return phoneNumMid_.isEqual(employee) && phoneNumEnd_.isEqual(employee);
 	}
 
 private:
@@ -128,7 +128,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.birthday.year == year_;
 	}
 
 private:
@@ -142,7 +142,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.birthday.month == month_;
 	}
 
 private:
@@ -156,7 +156,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.birthday.day == day_;
 	}
 
 private:
@@ -170,7 +170,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return conditionBirthdayYear.isEqual(employee) && conditionBirthdayMonth.isEqual(employee) && conditionBirthdayDay.isEqual(employee);
 	}
 
 private:
@@ -186,7 +186,7 @@ public:
 	}
 
 	virtual bool isEqual(const Employee &employee) const override {
-		return true;
+		return employee.certi == certi_;
 	}
 
 private:
