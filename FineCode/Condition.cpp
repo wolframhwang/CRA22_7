@@ -2,6 +2,10 @@
 
 class ConditionEmployeeNum : public Condition {
 public:
+    static bool isValid(const string &employeeNum) {
+        return false;
+    }
+
     ConditionEmployeeNum(const unsigned long &employeeNum) :
         employeeNum_(employeeNum) {
     }
@@ -56,7 +60,7 @@ private:
 
 class ConditionName : public Condition {
 public:
-    ConditionName(string first, string last) :
+    ConditionName(const string &first, const string &last) :
         nameFirst(first), nameLast(last) {
     }
 

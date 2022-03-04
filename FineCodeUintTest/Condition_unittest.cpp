@@ -145,3 +145,32 @@ TEST(Condition, set)
     conditionCerti.set(employee2);
     EXPECT_EQ(true, conditionCerti.isEqual(employee2));
 }
+
+TEST(Condition, isValidEmployeeNum)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid(""));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("00000000"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("000000001"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000011111111"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("00000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("99999999"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000A"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("A0000000"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000 "));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid(" 0000000"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000a"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("a0000000"));
+
+    // 3. 연도 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("68000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("69000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("99000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("00000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("21000000"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("22000000"));
+}
