@@ -174,3 +174,60 @@ TEST(Condition, isValidEmployeeNum)
     EXPECT_EQ(true,  ConditionEmployeeNum::isValid("21000000"));
     EXPECT_EQ(false, ConditionEmployeeNum::isValid("22000000"));
 }
+
+TEST(Condition, isValidName)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionName::isValid(""));
+    EXPECT_EQ(false, ConditionName::isValid("A "));
+    EXPECT_EQ(true,  ConditionName::isValid("A A"));
+    EXPECT_EQ(true,  ConditionName::isValid("AAAAA AAAAABBBB"));
+    EXPECT_EQ(false, ConditionName::isValid("AAAAA AAAAABBBBB"));
+    EXPECT_EQ(false, ConditionName::isValid("AAAAABBBBB CCCCCDDDDDEEEEEFFFFF"));
+
+    // 2. 공백 개수 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionName::isValid("AAAAAAAAAAABBBB"));
+    EXPECT_EQ(true,  ConditionName::isValid("AAAAA AAAAABBBB"));
+    EXPECT_EQ(false, ConditionName::isValid("AAAAA AAAA BBBB"));
+    EXPECT_EQ(false, ConditionName::isValid("               "));
+
+    // 3. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionName::isValid("ABCDE FGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid("aBCDE FGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid("ABCDE FGHIJKLMz"));
+    EXPECT_EQ(false, ConditionName::isValid("0BCDE FGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid("1BCDE FGHIJKLM9"));
+
+    // 4. 공백 위치 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionName::isValid("ABCDE FGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid(" ABCDEFGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid("ABCDEFGHIJKLMZ "));
+}
+
+TEST(Condition, isValidNameFirst)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionNameFirst::isValid(""));
+    EXPECT_EQ(true,  ConditionNameFirst::isValid("A"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionNameFirst::isValid("ABCDZ"));
+    EXPECT_EQ(false, ConditionNameFirst::isValid("aBCDZ"));
+    EXPECT_EQ(false, ConditionNameFirst::isValid("ABCDz"));
+    EXPECT_EQ(false, ConditionNameFirst::isValid("0BCDZ"));
+    EXPECT_EQ(false, ConditionNameFirst::isValid("1BCD9"));
+}
+
+TEST(Condition, isValidNameLast)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionNameLast::isValid(""));
+    EXPECT_EQ(true,  ConditionNameLast::isValid("A"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionNameLast::isValid("ABCDZ"));
+    EXPECT_EQ(false, ConditionNameLast::isValid("aBCDZ"));
+    EXPECT_EQ(false, ConditionNameLast::isValid("ABCDz"));
+    EXPECT_EQ(false, ConditionNameLast::isValid("0BCDZ"));
+    EXPECT_EQ(false, ConditionNameLast::isValid("1BCD9"));
+}

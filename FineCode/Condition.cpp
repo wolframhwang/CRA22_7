@@ -41,6 +41,10 @@ private:
 
 class ConditionNameFirst : public Condition {
 public:
+    static bool isValid(const string& first) {
+        return false;
+    }
+
     ConditionNameFirst(const string &first) :
         first_(first) {
     }
@@ -59,6 +63,10 @@ private:
 
 class ConditionNameLast : public Condition {
 public:
+    static bool isValid(const string& last) {
+        return false;
+    }
+
     ConditionNameLast(const string &last) :
         last_(last) {
     }
@@ -77,6 +85,10 @@ private:
 
 class ConditionName : public Condition {
 public:
+    static bool isValid(const string& name) {
+        return false;
+    }
+
     ConditionName(const string &first, const string &last) :
         nameFirst(first), nameLast(last) {
     }
