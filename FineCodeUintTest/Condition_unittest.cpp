@@ -231,3 +231,22 @@ TEST(Condition, isValidNameLast)
     EXPECT_EQ(false, ConditionNameLast::isValid("0BCDZ"));
     EXPECT_EQ(false, ConditionNameLast::isValid("1BCD9"));
 }
+
+TEST(Condition, isValidCl)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionCl::isValid("CL1"));
+    EXPECT_EQ(false, ConditionCl::isValid("CL"));
+    EXPECT_EQ(false, ConditionCl::isValid("CL11"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionCl::isValid("CL1"));
+    EXPECT_EQ(false, ConditionCl::isValid("CM1"));
+
+    // 2. 숫자 범위 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionCl::isValid("CL0"));
+    EXPECT_EQ(true,  ConditionCl::isValid("CL1"));
+    EXPECT_EQ(true,  ConditionCl::isValid("CL4"));
+    EXPECT_EQ(false, ConditionCl::isValid("CL5"));
+    EXPECT_EQ(false, ConditionCl::isValid("CL8"));
+}

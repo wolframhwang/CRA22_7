@@ -142,6 +142,10 @@ private:
 
 class ConditionCl : public Condition {
 public:
+    static bool isValid(const string& cl) {
+        return false;
+    }
+
     ConditionCl(const CL &cl) :
         cl_(cl) {
     }
