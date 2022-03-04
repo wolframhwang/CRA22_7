@@ -143,7 +143,19 @@ private:
 class ConditionCl : public Condition {
 public:
     static bool isValid(const string& cl) {
-        return false;
+        if (cl.length() != 3) {
+            return false;
+        }
+
+        if (cl[0] != 'C' || cl[1] != 'L') {
+            return false;
+        }
+
+        if (cl[2] < '1' || cl[2] > '4') {
+            return false;
+        }
+
+        return true;
     }
 
     ConditionCl(const CL &cl) :
