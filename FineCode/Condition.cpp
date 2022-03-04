@@ -10,6 +10,10 @@ public:
         return employee.employeeNum == employeeNum_;
     }
 
+    virtual void set(Employee &employee) const override {
+        employee.employeeNum = employeeNum_;
+    }
+
 private:
     unsigned long employeeNum_;
 };
@@ -22,6 +26,10 @@ public:
 
     virtual bool isEqual(const Employee &employee) const override {
         return employee.name.first == first_;
+    }
+
+    virtual void set(Employee &employee) const override {
+        employee.name.first = first_;
     }
 
 private:
@@ -38,6 +46,10 @@ public:
         return employee.name.last == last_;
     }
 
+    virtual void set(Employee &employee) const override {
+        employee.name.last = last_;
+    }
+
 private:
     string last_;
 };
@@ -50,6 +62,11 @@ public:
 
     virtual bool isEqual(const Employee &employee) const override {
         return nameFirst.isEqual(employee) && nameLast.isEqual(employee);
+    }
+
+    virtual void set(Employee &employee) const override {
+        nameFirst.set(employee);
+        nameLast.set(employee);
     }
 
 private:
@@ -67,6 +84,10 @@ public:
         return employee.cl == cl_;
     }
 
+    virtual void set(Employee &employee) const override {
+        employee.cl = cl_;
+    }
+
 private:
     CL cl_;
 };
@@ -79,6 +100,10 @@ public:
 
     virtual bool isEqual(const Employee &employee) const override {
         return employee.phoneNum.mid == mid_;
+    }
+
+    virtual void set(Employee &employee) const override {
+        employee.phoneNum.mid = mid_;
     }
 
 private:
@@ -95,6 +120,10 @@ public:
         return employee.phoneNum.end == end_;
     }
 
+    virtual void set(Employee &employee) const override {
+        employee.phoneNum.end = end_;
+    }
+
 private:
     int end_;
 };
@@ -107,6 +136,11 @@ public:
 
     virtual bool isEqual(const Employee &employee) const override {
         return phoneNumMid_.isEqual(employee) && phoneNumEnd_.isEqual(employee);
+    }
+
+    virtual void set(Employee &employee) const override {
+        phoneNumMid_.set(employee);
+        phoneNumEnd_.set(employee);
     }
 
 private:
@@ -124,6 +158,10 @@ public:
         return employee.birthday.year == year_;
     }
 
+    virtual void set(Employee &employee) const override {
+        employee.birthday.year = year_;
+    }
+
 private:
     int year_;
 };
@@ -136,6 +174,10 @@ public:
 
     virtual bool isEqual(const Employee &employee) const override {
         return employee.birthday.month == month_;
+    }
+
+    virtual void set(Employee &employee) const override {
+        employee.birthday.month = month_;
     }
 
 private:
@@ -152,6 +194,10 @@ public:
         return employee.birthday.day == day_;
     }
 
+    virtual void set(Employee &employee) const override {
+        employee.birthday.day = day_;
+    }
+
 private:
     int day_;
 };
@@ -164,6 +210,12 @@ public:
 
     virtual bool isEqual(const Employee &employee) const override {
         return conditionBirthdayYear.isEqual(employee) && conditionBirthdayMonth.isEqual(employee) && conditionBirthdayDay.isEqual(employee);
+    }
+
+    virtual void set(Employee &employee) const override {
+        conditionBirthdayYear.set(employee);
+        conditionBirthdayMonth.set(employee);
+        conditionBirthdayDay.set(employee);
     }
 
 private:
@@ -180,6 +232,10 @@ public:
 
     virtual bool isEqual(const Employee &employee) const override {
         return employee.certi == certi_;
+    }
+
+    virtual void set(Employee &employee) const override {
+        employee.certi = certi_;
     }
 
 private:
