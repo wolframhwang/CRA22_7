@@ -2,8 +2,47 @@
 
 class ConditionEmployeeNum : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& employeeNum) {
+        if (isValid(employeeNum)) {
+            return make_shared<ConditionEmployeeNum>(employeeNum);
+        }
+        return nullptr;
+    }
+
+    static bool isValid(const string &employeeNum) {
+        static const unsigned EMPLOYEE_NUM_LENGTH = 8;
+
+        if (employeeNum.length() != EMPLOYEE_NUM_LENGTH) {
+            return false;
+        }
+
+        for (auto elem : employeeNum) {
+            if (elem < '0' || elem > '9') {
+                return false;
+            }
+        }
+
+        unsigned year = (employeeNum[0] - '0') * 10 + (employeeNum[1] - '0');
+        if (year > 21 && year < 69) {
+            return false;
+        }
+
+        return true;
+    }
+
     ConditionEmployeeNum(const unsigned long &employeeNum) :
         employeeNum_(employeeNum) {
+    }
+
+    ConditionEmployeeNum(const string &employeeNum) {
+        unsigned year = (employeeNum[0] - '0') * 10 + (employeeNum[1] - '0');
+        if (year >= 69) {
+            employeeNum_ = stoul("19" + employeeNum);
+        }
+        else
+        {
+            employeeNum_ = stoul("20" + employeeNum);
+        }
     }
 
     virtual bool isEqual(const Employee &employee) const override {
@@ -56,7 +95,55 @@ private:
 
 class ConditionName : public Condition {
 public:
-    ConditionName(string first, string last) :
+    static ConditionPtr checkAndMake(const string& name) {
+        if (ConditionName::isValid(name)) {
+            size_t pos = name.find(' ');
+
+            if (pos > 0 && pos < name.length() - 1) {
+                string first = { name.c_str(), pos};
+                string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
+
+                return make_shared<ConditionName>(first, last);
+            }
+        }
+
+        return nullptr;
+    }
+
+    static bool isValid(const string &name) {
+        static const unsigned MAX_NAME_LENGTH = 15;
+        static const unsigned MIN_NAME_LENGTH = 3;
+
+        if (name.length() > MAX_NAME_LENGTH || name.length() < MIN_NAME_LENGTH) {
+            return false;
+        }
+
+        unsigned countSpace = 0;
+        for (auto elem : name) {
+            if (elem == ' ') {
+                if (countSpace > 0) {
+                    return false;
+                }
+                countSpace++;
+                continue;
+            }
+
+            if (elem < 'A' || elem > 'Z') {
+                return false;
+            }
+        }
+        if (countSpace == 0) {
+            return false;
+        }
+
+        if (name[0] == ' ' || name[name.length() - 1] == ' ') {
+            return false;
+        }
+
+        return true;
+    }
+
+    ConditionName(const string &first, const string &last) :
         nameFirst(first), nameLast(last) {
     }
 
@@ -241,3 +328,16 @@ public:
 private:
     Grade certi_;
 };
+
+ConditionPtr Condition::make(const string& type, const string& value) {
+    ConditionPtr result = nullptr;
+
+    if (type == "employeeNum") {
+        return ConditionEmployeeNum::checkAndMake(value);
+    }
+    else if (type == "name") {
+        return ConditionName::checkAndMake(value);
+    }
+
+    return result;
+}

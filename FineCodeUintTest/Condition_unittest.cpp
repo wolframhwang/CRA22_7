@@ -145,3 +145,77 @@ TEST(Condition, set)
     conditionCerti.set(employee2);
     EXPECT_EQ(true, conditionCerti.isEqual(employee2));
 }
+
+TEST(Condition, isValidEmployeeNum)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid(""));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("00000000"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("000000001"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000011111111"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("00000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("99999999"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000A"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("A0000000"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000 "));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid(" 0000000"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("0000000a"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("a0000000"));
+
+    // 3. 연도 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("68000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("69000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("99000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("00000000"));
+    EXPECT_EQ(true,  ConditionEmployeeNum::isValid("21000000"));
+    EXPECT_EQ(false, ConditionEmployeeNum::isValid("22000000"));
+}
+
+TEST(Condition, isValidName)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionName::isValid(""));
+    EXPECT_EQ(false, ConditionName::isValid("A "));
+    EXPECT_EQ(true,  ConditionName::isValid("A A"));
+    EXPECT_EQ(true,  ConditionName::isValid("AAAAA AAAAABBBB"));
+    EXPECT_EQ(false, ConditionName::isValid("AAAAA AAAAABBBBB"));
+    EXPECT_EQ(false, ConditionName::isValid("AAAAABBBBB CCCCCDDDDDEEEEEFFFFF"));
+
+    // 2. 공백 개수 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionName::isValid("AAAAAAAAAAABBBB"));
+    EXPECT_EQ(true,  ConditionName::isValid("AAAAA AAAAABBBB"));
+    EXPECT_EQ(false, ConditionName::isValid("AAAAA AAAA BBBB"));
+    EXPECT_EQ(false, ConditionName::isValid("               "));
+
+    // 3. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionName::isValid("ABCDE FGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid("aBCDE FGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid("ABCDE FGHIJKLMz"));
+    EXPECT_EQ(false, ConditionName::isValid("0BCDE FGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid("1BCDE FGHIJKLM9"));
+
+    // 4. 공백 위치 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionName::isValid("ABCDE FGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid(" ABCDEFGHIJKLMZ"));
+    EXPECT_EQ(false, ConditionName::isValid("ABCDEFGHIJKLMZ "));
+}
+
+TEST(Condition, makeSuccess)
+{
+    Employee employee = { 2015123099, {"VXIHTOTH", "JHOP"}, CL::CL3, {3112, 2609}, {1977, 12, 11}, Grade::ADV };
+
+    // 1. Condition::make를 통해 각 Condition type별 Entry를 생성한다.
+    // 2. 원하는대로 값이 설정되었는지 확인한다.
+
+    ConditionPtr conditionEmployeeNum = Condition::make("employeeNum", "15123099");
+    ASSERT_NE(nullptr, conditionEmployeeNum);
+    EXPECT_EQ(true, conditionEmployeeNum->isEqual(employee));
+
+    ConditionPtr conditionName = Condition::make("name", "VXIHTOTH JHOP");
+    ASSERT_NE(nullptr, conditionName);
+    EXPECT_EQ(true, conditionName->isEqual(employee));
+}
