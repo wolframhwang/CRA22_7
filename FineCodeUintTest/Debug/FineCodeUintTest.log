@@ -1,5 +1,0 @@
-﻿  IDataBaseTest.cpp
-C:\Users\hzw94\Desktop\CRA22_7\FineCodeUintTest\IDataBaseTest.cpp(43,1): fatal error C1010: 미리 컴파일된 헤더를 찾는 동안 예기치 않은 파일의 끝이 나타났습니다. '#include "pch.h"'을(를) 소스에 추가하시겠습니까?
-  test.cpp
-C:\Users\hzw94\Desktop\CRA22_7\FineCodeUintTest\test.cpp(7,1): fatal error C1010: 미리 컴파일된 헤더를 찾는 동안 예기치 않은 파일의 끝이 나타났습니다. '#include "pch.h"'을(를) 소스에 추가하시겠습니까?
-  코드를 생성하고 있습니다...
