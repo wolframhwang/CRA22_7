@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../FineCode/Condition.h"
+#include "../FineCode/Condition.cpp"
 
 TEST(Condition, isEqual)
 {
