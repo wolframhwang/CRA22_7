@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common.h"
+#include "Employee.h"
 
 class Condition {
 public:

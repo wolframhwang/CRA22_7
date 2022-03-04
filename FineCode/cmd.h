@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-#include "common.h"
+#include "Employee.h"
 #include "Condition.h"
 #include "IDataBase.h"
 
