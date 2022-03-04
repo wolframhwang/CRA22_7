@@ -1,4 +1,10 @@
 .vs
 x64
-FineCode/x64
-FineCodeUnitTest/x64
+*.sln
+*.user
+*.vcxproj
+*.log
+output.txt
+packages
+packages.config
+Debug
