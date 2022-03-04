@@ -139,7 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="InputManager.h" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h" />
+    <ClInclude Include="Condition.h" />
+    <ClInclude Include="DBOperator.h" />
+    <ClInclude Include="DB_interface.h" />
+    <ClInclude Include="OutputManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input_test.txt" />
+    <Text Include="output_test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

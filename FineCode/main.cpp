@@ -2,21 +2,27 @@
 #include <iostream>
 #include <string>
 
-const unsigned MAX_LINE_SIZE = 512;
+#include "InputManager.h"
+#include "OutputManager.h"
 
 using namespace std;
 
 int main(void)
 {
-	ifstream inputFile("input.txt");
-	ofstream outputFile("output.txt");
+	/* = > 실제로는 EmployeeManager 생성자에서 Input.txt / Output.txt 입력 받을 예정 */
 
-	while (inputFile.eof() == false) {
-		char line[MAX_LINE_SIZE];
+// while(eof) {
+//  cmd = inputManager.getCmd()
+//  database.execute(cmd)
+// }
 
-		inputFile.getline(line, MAX_LINE_SIZE, '\n');
-		outputFile << line << endl;
-	}
+	Cmd* c = new Cmd();
+
+	InputManager* im = new InputManager();
+	im->getCmd();
+
+	OutputManager* om = new OutputManager();
+	om->printResult(*c);
 
 	return 0;
 }

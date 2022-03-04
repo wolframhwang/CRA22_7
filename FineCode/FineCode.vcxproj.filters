@@ -18,5 +18,33 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.h">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DB_interface.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="DBOperator.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputManager.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input_test.txt">
+      <Filter>소스 파일</Filter>
+    </Text>
+    <Text Include="output_test.txt">
+      <Filter>소스 파일</Filter>
+    </Text>
   </ItemGroup>
 </Project>

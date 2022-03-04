@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include <string>
 using namespace std;
+
+const unsigned MAX_LINE_SIZE = 512;
+
 enum class EInfoType {
     employeeNum,
     name,
@@ -10,14 +13,6 @@ enum class EInfoType {
     certi,
 };
 
-typedef struct Employee {
-    int employeeNum;
-    string name;
-    string cl​;
-    string phoneNum​;
-    string birthday​;
-    string certi​;
-}​;
 enum class CL {
     CL1,
     CL2,
@@ -49,4 +44,9 @@ typedef struct Employee {
     PhoneNum phoneNum;
     Date birthday;
     Grade certi;
+};
+
+// for avoiding build error temporary
+class Cmd {
+    int dummy_;
 };
