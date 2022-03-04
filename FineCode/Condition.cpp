@@ -41,8 +41,18 @@ private:
 
 class ConditionNameFirst : public Condition {
 public:
-    static bool isValid(const string& first) {
-        return false;
+    static bool isValid(const string &first) {
+        if (first.length() == 0) {
+            return false;
+        }
+
+        for (auto elem : first) {
+            if (elem < 'A' || elem > 'Z') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     ConditionNameFirst(const string &first) :
@@ -63,8 +73,18 @@ private:
 
 class ConditionNameLast : public Condition {
 public:
-    static bool isValid(const string& last) {
-        return false;
+    static bool isValid(const string &last) {
+        if (last.length() == 0) {
+            return false;
+        }
+
+        for (auto elem : last) {
+            if (elem < 'A' || elem > 'Z') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     ConditionNameLast(const string &last) :
@@ -85,8 +105,21 @@ private:
 
 class ConditionName : public Condition {
 public:
-    static bool isValid(const string& name) {
-        return false;
+    static bool isValid(const string &name) {
+        static const unsigned MAX_NAME_LENGTH = 15;
+
+        if (name.length() > MAX_NAME_LENGTH) {
+            return false;
+        }
+
+        size_t pos = name.find(' ');
+        if (pos == string::npos) {
+            return false;
+        }
+
+        string first = { name.c_str(), pos };
+        string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
+        return ConditionNameFirst::isValid(first) && ConditionNameLast::isValid(last);
     }
 
     ConditionName(const string &first, const string &last) :
