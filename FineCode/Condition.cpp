@@ -3,7 +3,24 @@
 class ConditionEmployeeNum : public Condition {
 public:
     static bool isValid(const string &employeeNum) {
-        return false;
+        static const unsigned EMPLOYEE_NUM_LENGTH = 8;
+
+        if (employeeNum.length() != EMPLOYEE_NUM_LENGTH) {
+            return false;
+        }
+
+        for (auto elem : employeeNum) {
+            if (elem < '0' || elem > '9') {
+                return false;
+            }
+        }
+
+        unsigned year = (employeeNum[0] - '0') * 10 + (employeeNum[1] - '0');
+        if (year > 21 && year < 69) {
+            return false;
+        }
+
+        return true;
     }
 
     ConditionEmployeeNum(const unsigned long &employeeNum) :
