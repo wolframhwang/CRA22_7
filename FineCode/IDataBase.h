@@ -1,12 +1,13 @@
 #pragma once
 #include <map>
-#include "common.h"
+#include "Employee.h"
+#include "cmd.h"
 
 using namespace std;
 
 struct IDataBase {
     virtual bool add(EmployeeInfo employeeInfo) = 0;
-    virtual bool modify(unsigned int employeeNumber, EmployeeInfo employeeInfo) = 0;
+    virtual bool modify(CmdModify &command) = 0;
     virtual bool erase(unsigned int employeeNumber) = 0;
     virtual EmployeeInfo* getEmployeeInfo(unsigned int employeeNumber) = 0;
 };
@@ -21,7 +22,10 @@ public:
         return employeesList.insert(make_pair(employeeNum, employee)).second;
     }    
     
-    virtual bool modify(unsigned int employeeNumber, EmployeeInfo employeeInfo) override {
+    virtual bool modify(CmdModify &command) override {
+        for (auto employee: employeesList) {
+            
+        }
         if(employeesList.find(employeeNumber) == employeesList.end()) return false;
         employeesList[employeeNumber] = employeeInfo;
         return true;
