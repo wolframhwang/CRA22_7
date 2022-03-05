@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "gtest/gtest.h"
 #include "../FineCode/IDataBase.h"
 #include "../FineCode/Condition.cpp"
@@ -44,6 +45,9 @@ TEST(IDataBase, IDBSearch) {
     IDataBase *db = new DataBase();
     
     db->add({ 20045583, {"Wolfram", "Hwang"}, CL::CL2, {5678,4321}, {2000, 2, 14}, Grade::PRO });
+    db->add({ 20045584, {"Wolfram", "Hwang"}, CL::CL2, {5678,4321}, {2000, 2, 14}, Grade::PRO });
+    db->add({ 20045585, {"Wolfram", "Hwang"}, CL::CL2, {5678,4321}, {2000, 2, 14}, Grade::PRO });
+    db->add({ 20045586, {"Wolfram", "Hwang"}, CL::CL2, {5678,4321}, {2000, 2, 14}, Grade::PRO });
     db->add({ 12345678, {"ABC", "DEF"}, CL::CL2, {1234, 5678}, {2120, 2, 14}, Grade::EX});
 	db->add({ 2015123099, {"POPO","JHON"},CL::CL3,{3112,2609},{1977,12,11},Grade::ADV });
 	db->add({ 2017112609, {"FB","ANANTA"},CL::CL4,{5645,6122},{1986,12,03},Grade::PRO });
@@ -57,7 +61,11 @@ TEST(IDataBase, IDBSearch) {
 	db->add({ 1903113260, {"SKATE","BOARD"},CL::CL2,{5798,5383},{1979,10,18},Grade::PRO });
     
     Condition *cond = new ConditionNameFirst("Wolfram");
-    EXPECT_EQ({20045583}, db->search(cond));
+    vector<unsigned long> ret = db->search(*cond);
+    EXPECT_EQ(20045583, ret[0]);
+    EXPECT_EQ(20045584, ret[1]);
+    EXPECT_EQ(20045585, ret[2]);
+    EXPECT_EQ(20045586, ret[3]);
 }
 
 TEST(IDataBaseTC, IDBMod) {
