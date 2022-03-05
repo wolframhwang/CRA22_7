@@ -42,7 +42,21 @@ struct Date {
     int month;
     int day;
 };
-typedef struct EmployeeInfo {
+
+struct EmployeeInfoComp {
+    unsigned long employeeNum;
+    Name name;
+    CL cl;
+    PhoneNum phoneNum;
+    Date birthday;
+    Grade certi;
+
+    bool operator<(const EmployeeInfoComp e) const {
+        return this->employeeNum > e.employeeNum;
+    }
+};
+
+typedef struct EmployeeInfo: public EmployeeInfoComp {
     unsigned long employeeNum;
     Name name;
     CL cl;
