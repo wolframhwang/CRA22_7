@@ -2,6 +2,13 @@
 
 class ConditionEmployeeNum : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& employeeNum) {
+        if (isValid(employeeNum)) {
+            return make_shared<ConditionEmployeeNum>(employeeNum);
+        }
+        return nullptr;
+    }
+
     static bool isValid(const string &employeeNum) {
         static const unsigned EMPLOYEE_NUM_LENGTH = 8;
 
@@ -27,6 +34,17 @@ public:
         employeeNum_(employeeNum) {
     }
 
+    ConditionEmployeeNum(const string &employeeNum) {
+        unsigned year = (employeeNum[0] - '0') * 10 + (employeeNum[1] - '0');
+        if (year >= 69) {
+            employeeNum_ = stoul("19" + employeeNum);
+        }
+        else
+        {
+            employeeNum_ = stoul("20" + employeeNum);
+        }
+    }
+
     virtual bool isEqual(const Employee &employee) const override {
         return employee.employeeNum == employeeNum_;
     }
@@ -41,6 +59,13 @@ private:
 
 class ConditionNameFirst : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& first) {
+        if (isValid(first)) {
+            return make_shared<ConditionNameFirst>(first);
+        }
+        return nullptr;
+    }
+
     static bool isValid(const string &first) {
         if (first.length() == 0) {
             return false;
@@ -73,6 +98,13 @@ private:
 
 class ConditionNameLast : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& last) {
+        if (isValid(last)) {
+            return make_shared<ConditionNameLast>(last);
+        }
+        return nullptr;
+    }
+
     static bool isValid(const string &last) {
         if (last.length() == 0) {
             return false;
@@ -105,6 +137,21 @@ private:
 
 class ConditionName : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& name) {
+        if (isValid(name)) {
+            size_t pos = name.find(' ');
+
+            if (pos > 0 && pos < name.length() - 1) {
+                string first = { name.c_str(), pos};
+                string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
+
+                return make_shared<ConditionName>(first, last);
+            }
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string &name) {
         static const unsigned MAX_NAME_LENGTH = 15;
 
@@ -142,6 +189,31 @@ private:
 
 class ConditionCl : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& clString) {
+        if (isValid(clString)) {
+            CL cl;
+
+            switch (clString[2]) {
+            case '1':
+                cl = CL::CL1;
+                break;
+            case '2':
+                cl = CL::CL2;
+                break;
+            case '3':
+                cl = CL::CL3;
+                break;
+            case '4':
+                cl = CL::CL4;
+                break;
+            }
+
+            return make_shared<ConditionCl>(cl);
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& cl) {
         if (cl.length() != 3) {
             return false;
@@ -176,6 +248,14 @@ private:
 
 class ConditionPhoneNumMid : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& mid) {
+        if (isValid(mid)) {
+            return make_shared<ConditionPhoneNumMid>(stoi(mid));
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& mid) {
         const unsigned PHONE_NUM_MID_LENGTH = 4;
 
@@ -210,6 +290,14 @@ private:
 
 class ConditionPhoneNumEnd : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& end) {
+        if (isValid(end)) {
+            return make_shared<ConditionPhoneNumEnd>(stoi(end));
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& end) {
         const unsigned PHONE_NUM_END_LENGTH = 4;
 
@@ -244,6 +332,16 @@ private:
 
 class ConditionPhoneNum : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& phoneNum) {
+        if (isValid(phoneNum)) {
+            auto mid = stoi(string(phoneNum.c_str() + 4, 4));
+            auto end = stoi(string(phoneNum.c_str() + 9, 4));
+            return make_shared<ConditionPhoneNum>(mid, end);
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& phoneNum) {
         const unsigned PHONE_NUM_LENGTH = 13;
 
@@ -284,6 +382,14 @@ private:
 
 class ConditionBirthdayYear : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& year) {
+        if (isValid(year)) {
+            return make_shared<ConditionBirthdayYear>(stoi(year));
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& year) {
         static const unsigned BIRTHDAY_YEAR_LENGTH = 4;
 
@@ -318,6 +424,14 @@ private:
 
 class ConditionBirthdayMonth : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& month) {
+        if (isValid(month)) {
+            return make_shared<ConditionBirthdayMonth>(stoi(month));
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& month) {
         static const unsigned BIRTHDAY_MONTH_LENGTH = 2;
 
@@ -357,6 +471,14 @@ private:
 
 class ConditionBirthdayDay : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& day) {
+        if (isValid(day)) {
+            return make_shared<ConditionBirthdayDay>(stoi(day));
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& day) {
         static const unsigned BIRTHDAY_DAY_LENGTH = 2;
 
@@ -396,6 +518,17 @@ private:
 
 class ConditionBirthday : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& birthday) {
+        if (isValid(birthday)) {
+            auto year  = stoi(string(birthday.c_str(), 4));
+            auto month = stoi(string(birthday.c_str() + 4, 2));
+            auto day   = stoi(string(birthday.c_str() + 6, 2));
+            return make_shared<ConditionBirthday>(year, month, day);
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& birthday) {
         static const unsigned BIRTHDAY_LENGTH = 8;
 
@@ -431,6 +564,25 @@ private:
 
 class ConditionCerti : public Condition {
 public:
+    static ConditionPtr checkAndMake(const string& certiString) {
+        if (isValid(certiString)) {
+            Grade certi;
+            if (certiString == "ADV") {
+                certi = Grade::ADV;
+            }
+            else if (certiString == "PRO") {
+                certi = Grade::PRO;
+            }
+            else if (certiString == "EX") {
+                certi = Grade::EX;
+            }
+
+            return make_shared<ConditionCerti>(certi);
+        }
+
+        return nullptr;
+    }
+
     static bool isValid(const string& certi) {
         return certi == "ADV" || certi == "PRO" || certi == "EX";
     }
@@ -452,5 +604,45 @@ private:
 };
 
 ConditionPtr Condition::make(const string& type, const string& value) {
+    if (type == "employeeNum") {
+        return ConditionEmployeeNum::checkAndMake(value);
+    }
+    else if (type == "name") {
+        return ConditionName::checkAndMake(value);
+    }
+    else if (type == "nameFirst") {
+        return ConditionNameFirst::checkAndMake(value);
+    }
+    else if (type == "nameLast") {
+        return ConditionNameLast::checkAndMake(value);
+    }
+    else if (type == "cl") {
+        return ConditionCl::checkAndMake(value);
+    }
+    else if (type == "phoneNum") {
+        return ConditionPhoneNum::checkAndMake(value);
+    }
+    else if (type == "phoneNumMid") {
+        return ConditionPhoneNumMid::checkAndMake(value);
+    }
+    else if (type == "phoneNumEnd") {
+        return ConditionPhoneNumEnd::checkAndMake(value);
+    }
+    else if (type == "birthday") {
+        return ConditionBirthday::checkAndMake(value);
+    }
+    else if (type == "birthdayYear") {
+        return ConditionBirthdayYear::checkAndMake(value);
+    }
+    else if (type == "birthdayMonth") {
+        return ConditionBirthdayMonth::checkAndMake(value);
+    }
+    else if (type == "birthdayDay") {
+        return ConditionBirthdayDay::checkAndMake(value);
+    }
+    else if (type == "certi") {
+        return ConditionCerti::checkAndMake(value);
+    }
+
     return nullptr;
 }
