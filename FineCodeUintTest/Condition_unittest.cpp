@@ -390,3 +390,64 @@ TEST(Condition, isValidCerti)
     EXPECT_EQ(false, ConditionCerti::isValid("PROO"));
     EXPECT_EQ(false, ConditionCerti::isValid("INVALID_STRING"));
 }
+
+TEST(Condition, make)
+{
+    Employee employee = { 2015123099, {"VXIHTOTH", "JHOP"}, CL::CL3, {3112, 2609}, {1977, 12, 11}, Grade::ADV };
+
+    // 1. Condition::make를 통해 각 Condition type별 Entry를 생성한다.
+    // 2. nullptr이 아닌 값이 반환되었는지 확인한다.
+    // 3. 원하는대로 값이 설정되었는지 확인한다.
+
+    ConditionPtr conditionEmployeeNum = Condition::make("employeeNum", "15123099");
+    ASSERT_NE(nullptr, conditionEmployeeNum);
+    EXPECT_EQ(true, conditionEmployeeNum->isEqual(employee));
+
+    ConditionPtr conditionName = Condition::make("name", "VXIHTOTH JHOP");
+    ASSERT_NE(nullptr, conditionName);
+    EXPECT_EQ(true, conditionName->isEqual(employee));
+
+    ConditionPtr conditionNameFirst = Condition::make("nameFirst", "VXIHTOTH");
+    ASSERT_NE(nullptr, conditionNameFirst);
+    EXPECT_EQ(true, conditionNameFirst->isEqual(employee));
+
+    ConditionPtr conditionNameLast = Condition::make("nameLast", "JHOP");
+    ASSERT_NE(nullptr, conditionNameLast);
+    EXPECT_EQ(true, conditionNameLast->isEqual(employee));
+
+    ConditionPtr conditionCl = Condition::make("cl", "CL3");
+    ASSERT_NE(nullptr, conditionCl);
+    EXPECT_EQ(true, conditionCl->isEqual(employee));
+
+    ConditionPtr conditionPhoneNum = Condition::make("phoneNum", "010-3112-2609");
+    ASSERT_NE(nullptr, conditionPhoneNum);
+    EXPECT_EQ(true, conditionPhoneNum->isEqual(employee));
+
+    ConditionPtr conditionPhoneNumMid = Condition::make("phoneNumMid", "3112");
+    ASSERT_NE(nullptr, conditionPhoneNumMid);
+    EXPECT_EQ(true, conditionPhoneNumMid->isEqual(employee));
+
+    ConditionPtr conditionPhoneNumEnd = Condition::make("phoneNumEnd", "2609");
+    ASSERT_NE(nullptr, conditionPhoneNumEnd);
+    EXPECT_EQ(true, conditionPhoneNumEnd->isEqual(employee));
+
+    ConditionPtr conditionBirthday = Condition::make("birthday", "19771211");
+    ASSERT_NE(nullptr, conditionBirthday);
+    EXPECT_EQ(true, conditionBirthday->isEqual(employee));
+
+    ConditionPtr conditionBirthdayYear = Condition::make("birthdayYear", "1977");
+    ASSERT_NE(nullptr, conditionBirthdayYear);
+    EXPECT_EQ(true, conditionBirthdayYear->isEqual(employee));
+
+    ConditionPtr conditionBirthdayMonth = Condition::make("birthdayMonth", "12");
+    ASSERT_NE(nullptr, conditionBirthdayMonth);
+    EXPECT_EQ(true, conditionBirthdayMonth->isEqual(employee));
+
+    ConditionPtr conditionBirthdayDay = Condition::make("birthdayDay", "11");
+    ASSERT_NE(nullptr, conditionBirthdayDay);
+    EXPECT_EQ(true, conditionBirthdayDay->isEqual(employee));
+
+    ConditionPtr conditionCerti = Condition::make("certi", "ADV");
+    ASSERT_NE(nullptr, conditionCerti);
+    EXPECT_EQ(true, conditionCerti->isEqual(employee));
+}

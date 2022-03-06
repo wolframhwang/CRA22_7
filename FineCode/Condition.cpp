@@ -450,3 +450,7 @@ public:
 private:
     Grade certi_;
 };
+
+ConditionPtr Condition::make(const string& type, const string& value) {
+    return nullptr;
+}
