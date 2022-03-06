@@ -35,6 +35,7 @@ public:
 
     virtual bool erase(unsigned int employeeNumber) override {
         if(mutex) return false;
+        if(employeesList.find(employeeNumber) == employeesList.end()) return false;
         mutex = true;
         employeesList.erase(employeeNumber);
         mutex = false;
