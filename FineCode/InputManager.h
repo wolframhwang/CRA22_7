@@ -9,11 +9,6 @@
 using namespace std;
 
 class InputManager {
-private:
-    ifstream inputFileStream_;
-    string inputFileName_;
-    vector<string> parsedCmd_;
-
 public:
     InputManager(const string& inputFileName)
         : inputFileName_(inputFileName) {
@@ -57,4 +52,9 @@ public:
 
         return *c;
     }
+    
+private:
+    ifstream inputFileStream_;
+    string inputFileName_;
+    vector<string> parsedCmd_;
 };
