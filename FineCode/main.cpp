@@ -12,12 +12,12 @@ using namespace std;
 
 int main(void)
 {
-	// TODO: need to implement in 'employeeManager'
-	// while (input is done) {
-	InputManager* im = new InputManager("../input.txt");
-	ICmd c = im->getCmd(); // TODO: Can't return (pure) virtual function, need to fix
-	// call output manager
+    // TODO: need to implement in 'employeeManager'
+    // while (input is done) {
+    InputManager* im = new InputManager("../input.txt");
+    ICmd c = im->getCmd(); // TODO: Can't return (pure) virtual function, need to fix
+    // call output manager
     // }
 
-	return 0;
+    return 0;
 }
