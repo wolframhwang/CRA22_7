@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <vector>
 
 #include "Employee.h"
 #include "Condition.h"
@@ -23,8 +24,11 @@ public:
     ICmd(): result() {};
     virtual Result execute(shared_ptr<IDataBase> database) = 0;
     virtual void setCondition(shared_ptr<Condition> targetCondition) {}
+    vector<string> getParsedCmd() { return parsedCmd_; }
+    void setParsedCmd(vector<string> parsedCmd) { parsedCmd_ = parsedCmd; }
 protected:
     Result result;
+    vector<string> parsedCmd_;
 };
 
 class CmdAdd : public ICmd {
