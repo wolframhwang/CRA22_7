@@ -177,7 +177,19 @@ private:
 class ConditionPhoneNumMid : public Condition {
 public:
     static bool isValid(const string& mid) {
-        return false;
+        const unsigned PHONE_NUM_MID_LENGTH = 4;
+
+        if (mid.length() != PHONE_NUM_MID_LENGTH) {
+            return false;
+        }
+
+        for (auto elem : mid) {
+            if (elem < '0' || elem > '9') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     ConditionPhoneNumMid(int mid) :
@@ -199,7 +211,19 @@ private:
 class ConditionPhoneNumEnd : public Condition {
 public:
     static bool isValid(const string& end) {
-        return false;
+        const unsigned PHONE_NUM_END_LENGTH = 4;
+
+        if (end.length() != PHONE_NUM_END_LENGTH) {
+            return false;
+        }
+
+        for (auto elem : end) {
+            if (elem < '0' || elem > '9') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     ConditionPhoneNumEnd(int end) :
@@ -221,7 +245,23 @@ private:
 class ConditionPhoneNum : public Condition {
 public:
     static bool isValid(const string& phoneNum) {
-        return false;
+        const unsigned PHONE_NUM_LENGTH = 13;
+
+        if (phoneNum.length() != PHONE_NUM_LENGTH) {
+            return false;
+        }
+
+        if (phoneNum[3] != '-' || phoneNum[8] != '-') {
+            return false;
+        }
+
+        if (phoneNum[0] != '0' || phoneNum[1] != '1' || phoneNum[2] != '0') {
+            return false;
+        }
+
+        string phoneNumMid = string(phoneNum.c_str() + 4, 4);
+        string phoneNumEnd = string(phoneNum.c_str() + 9, 4);
+        return ConditionPhoneNumMid::isValid(phoneNumMid) && ConditionPhoneNumEnd::isValid(phoneNumEnd);
     }
 
     ConditionPhoneNum(int mid, int end) :
