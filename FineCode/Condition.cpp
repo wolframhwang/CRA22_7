@@ -285,7 +285,19 @@ private:
 class ConditionBirthdayYear : public Condition {
 public:
     static bool isValid(const string& year) {
-        return false;
+        static const unsigned BIRTHDAY_YEAR_LENGTH = 4;
+
+        if (year.length() != BIRTHDAY_YEAR_LENGTH) {
+            return false;
+        }
+
+        for (auto elem : year) {
+            if (elem < '0' || elem > '9') {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     ConditionBirthdayYear(const int &year) :
@@ -307,7 +319,24 @@ private:
 class ConditionBirthdayMonth : public Condition {
 public:
     static bool isValid(const string& month) {
-        return false;
+        static const unsigned BIRTHDAY_MONTH_LENGTH = 2;
+
+        if (month.length() != BIRTHDAY_MONTH_LENGTH) {
+            return false;
+        }
+
+        for (auto elem : month) {
+            if (elem < '0' || elem > '9') {
+                return false;
+            }
+        }
+
+        auto value = std::stoul(month);
+        if (value < 1 || value > 12) {
+            return false;
+        }
+
+        return true;
     }
 
     ConditionBirthdayMonth(const int &month) :
@@ -329,7 +358,24 @@ private:
 class ConditionBirthdayDay : public Condition {
 public:
     static bool isValid(const string& day) {
-        return false;
+        static const unsigned BIRTHDAY_DAY_LENGTH = 2;
+
+        if (day.length() != BIRTHDAY_DAY_LENGTH) {
+            return false;
+        }
+
+        for (auto elem : day) {
+            if (elem < '0' || elem > '9') {
+                return false;
+            }
+        }
+
+        auto value = std::stoul(day);
+        if (value < 1 || value > 31) {
+            return false;
+        }
+
+        return true;
     }
 
     ConditionBirthdayDay(const int &day) :
@@ -351,7 +397,16 @@ private:
 class ConditionBirthday : public Condition {
 public:
     static bool isValid(const string& birthday) {
-        return false;
+        static const unsigned BIRTHDAY_LENGTH = 8;
+
+        if (birthday.length() != BIRTHDAY_LENGTH) {
+            return false;
+        }
+
+        string year  = string(birthday.c_str(), 4);
+        string month = string(birthday.c_str() + 4, 2);
+        string day   = string(birthday.c_str() + 6, 2);
+        return ConditionBirthdayYear::isValid(year) && ConditionBirthdayMonth::isValid(month) && ConditionBirthdayDay::isValid(day);
     }
 
     ConditionBirthday(const int &year, const int &month, const int &day) :
