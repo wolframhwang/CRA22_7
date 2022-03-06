@@ -250,3 +250,59 @@ TEST(Condition, isValidCl)
     EXPECT_EQ(false, ConditionCl::isValid("CL5"));
     EXPECT_EQ(false, ConditionCl::isValid("CL8"));
 }
+
+TEST(Condition, isValidPhoneNum)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("010-3112-260"));
+    EXPECT_EQ(true,  ConditionPhoneNum::isValid("010-3112-2609"));
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("010-3112-26099"));
+
+    // 2. '-' 문자 위치 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("01-03112-2609"));
+    EXPECT_EQ(true,  ConditionPhoneNum::isValid("010-3112-2609"));
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("010-31122-609"));
+
+    // 3. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionPhoneNum::isValid("010-3112-2609"));
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("a10-3112-2609"));
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("010-3112-260Z"));
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("010-3112-260-"));
+
+    // 4. 숫자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionPhoneNum::isValid("010-3112-2609"));
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("011-3112-2609"));
+    EXPECT_EQ(false, ConditionPhoneNum::isValid("110-3112-2609"));
+}
+
+TEST(Condition, isValidPhoneNumMid)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionPhoneNumMid::isValid(""));
+    EXPECT_EQ(false, ConditionPhoneNumMid::isValid("311"));
+    EXPECT_EQ(true,  ConditionPhoneNumMid::isValid("3112"));
+    EXPECT_EQ(false, ConditionPhoneNumMid::isValid("31124"));
+    EXPECT_EQ(false, ConditionPhoneNumMid::isValid("31124444"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionPhoneNumMid::isValid("3112"));
+    EXPECT_EQ(false, ConditionPhoneNumMid::isValid("311a"));
+    EXPECT_EQ(false, ConditionPhoneNumMid::isValid("311Z"));
+    EXPECT_EQ(false, ConditionPhoneNumMid::isValid("311-"));
+}
+
+TEST(Condition, isValidPhoneNumEnd)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionPhoneNumEnd::isValid(""));
+    EXPECT_EQ(false, ConditionPhoneNumEnd::isValid("311"));
+    EXPECT_EQ(true,  ConditionPhoneNumEnd::isValid("3112"));
+    EXPECT_EQ(false, ConditionPhoneNumEnd::isValid("31124"));
+    EXPECT_EQ(false, ConditionPhoneNumEnd::isValid("31124444"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionPhoneNumEnd::isValid("3112"));
+    EXPECT_EQ(false, ConditionPhoneNumEnd::isValid("311a"));
+    EXPECT_EQ(false, ConditionPhoneNumEnd::isValid("311Z"));
+    EXPECT_EQ(false, ConditionPhoneNumEnd::isValid("311-"));
+}

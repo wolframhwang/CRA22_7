@@ -176,6 +176,10 @@ private:
 
 class ConditionPhoneNumMid : public Condition {
 public:
+    static bool isValid(const string& mid) {
+        return false;
+    }
+
     ConditionPhoneNumMid(int mid) :
         mid_(mid) {
     }
@@ -194,6 +198,10 @@ private:
 
 class ConditionPhoneNumEnd : public Condition {
 public:
+    static bool isValid(const string& end) {
+        return false;
+    }
+
     ConditionPhoneNumEnd(int end) :
         end_(end) {
     }
@@ -212,6 +220,10 @@ private:
 
 class ConditionPhoneNum : public Condition {
 public:
+    static bool isValid(const string& phoneNum) {
+        return false;
+    }
+
     ConditionPhoneNum(int mid, int end) :
         phoneNumMid_(mid), phoneNumEnd_(end) {
     }
