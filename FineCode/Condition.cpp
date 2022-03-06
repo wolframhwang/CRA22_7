@@ -284,6 +284,10 @@ private:
 
 class ConditionBirthdayYear : public Condition {
 public:
+    static bool isValid(const string& year) {
+        return false;
+    }
+
     ConditionBirthdayYear(const int &year) :
         year_(year) {
     }
@@ -302,6 +306,10 @@ private:
 
 class ConditionBirthdayMonth : public Condition {
 public:
+    static bool isValid(const string& month) {
+        return false;
+    }
+
     ConditionBirthdayMonth(const int &month) :
         month_(month) {
     }
@@ -320,6 +328,10 @@ private:
 
 class ConditionBirthdayDay : public Condition {
 public:
+    static bool isValid(const string& day) {
+        return false;
+    }
+
     ConditionBirthdayDay(const int &day) :
         day_(day) {
     }
@@ -338,6 +350,10 @@ private:
 
 class ConditionBirthday : public Condition {
 public:
+    static bool isValid(const string& birthday) {
+        return false;
+    }
+
     ConditionBirthday(const int &year, const int &month, const int &day) :
         conditionBirthdayYear(year), conditionBirthdayMonth(month), conditionBirthdayDay(day) {
     }

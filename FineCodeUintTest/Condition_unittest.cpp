@@ -306,3 +306,74 @@ TEST(Condition, isValidPhoneNumEnd)
     EXPECT_EQ(false, ConditionPhoneNumEnd::isValid("311Z"));
     EXPECT_EQ(false, ConditionPhoneNumEnd::isValid("311-"));
 }
+
+TEST(Condition, isValidBirthday)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionBirthday::isValid("1977121"));
+    EXPECT_EQ(true,  ConditionBirthday::isValid("19771211"));
+    EXPECT_EQ(false, ConditionBirthday::isValid("197712111"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionBirthday::isValid("19771211"));
+    EXPECT_EQ(false, ConditionBirthday::isValid("1977121Z"));
+    EXPECT_EQ(false, ConditionBirthday::isValid("1977121 "));
+
+    // 3. 숫자 범위 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionBirthday::isValid("19771211"));
+    EXPECT_EQ(false, ConditionBirthday::isValid("19771200"));
+    EXPECT_EQ(false, ConditionBirthday::isValid("19771232"));
+    EXPECT_EQ(false, ConditionBirthday::isValid("19770011"));
+    EXPECT_EQ(false, ConditionBirthday::isValid("19771311"));
+}
+
+TEST(Condition, isValidBirthdayYear)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionBirthdayYear::isValid("197"));
+    EXPECT_EQ(true,  ConditionBirthdayYear::isValid("1977"));
+    EXPECT_EQ(false, ConditionBirthdayYear::isValid("19777"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionBirthdayYear::isValid("1977"));
+    EXPECT_EQ(false, ConditionBirthdayYear::isValid("197A"));
+    EXPECT_EQ(false, ConditionBirthdayYear::isValid("197 "));
+}
+
+TEST(Condition, isValidBirthdayMonth)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionBirthdayMonth::isValid("1"));
+    EXPECT_EQ(true,  ConditionBirthdayMonth::isValid("12"));
+    EXPECT_EQ(false, ConditionBirthdayMonth::isValid("123"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionBirthdayMonth::isValid("12"));
+    EXPECT_EQ(false, ConditionBirthdayMonth::isValid("1A"));
+    EXPECT_EQ(false, ConditionBirthdayMonth::isValid("1 "));
+
+    // 3. 숫자 범위 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionBirthdayMonth::isValid("00"));
+    EXPECT_EQ(true,  ConditionBirthdayMonth::isValid("01"));
+    EXPECT_EQ(true,  ConditionBirthdayMonth::isValid("12"));
+    EXPECT_EQ(false, ConditionBirthdayMonth::isValid("13"));
+}
+
+TEST(Condition, isValidBirthdayDay)
+{
+    // 1. 길이 조건에 대한 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionBirthdayDay::isValid("1"));
+    EXPECT_EQ(true,  ConditionBirthdayDay::isValid("12"));
+    EXPECT_EQ(false, ConditionBirthdayDay::isValid("123"));
+
+    // 2. 문자 구성 검사 결과가 적절한지 확인
+    EXPECT_EQ(true,  ConditionBirthdayDay::isValid("12"));
+    EXPECT_EQ(false, ConditionBirthdayDay::isValid("1A"));
+    EXPECT_EQ(false, ConditionBirthdayDay::isValid("1 "));
+
+    // 3. 숫자 범위 검사 결과가 적절한지 확인
+    EXPECT_EQ(false, ConditionBirthdayDay::isValid("00"));
+    EXPECT_EQ(true,  ConditionBirthdayDay::isValid("01"));
+    EXPECT_EQ(true,  ConditionBirthdayDay::isValid("31"));
+    EXPECT_EQ(false, ConditionBirthdayDay::isValid("32"));
+}
