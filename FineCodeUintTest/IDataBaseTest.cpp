@@ -84,7 +84,12 @@ TEST(IDataBaseTC, IDBMod) {
 	db->add({ 1902117175, {"SNOW","BOARD"},CL::CL4,{2814,1699},{1995,07,04},Grade::ADV });
 	db->add({ 1903113260, {"SKATE","BOARD"},CL::CL2,{5798,5383},{1979,10,18},Grade::PRO });
     
-    //EXPECT_EQ(db->modify(EmployeeNumber, EmployeeInfo()), true);
+    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.year, 2000);    
+    Condition *findCond = new ConditionNameFirst("Wolfram");
+    Condition *modifyCond = new ConditionBirthdayYear(2012);
+    vector<unsigned long> ret = db->search(*cond);
+    db->modify(ret[0], *modifyCond);
+    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.year, 2012);    
 }
 
 
