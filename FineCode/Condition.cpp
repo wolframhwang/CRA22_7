@@ -432,7 +432,7 @@ private:
 class ConditionCerti : public Condition {
 public:
     static bool isValid(const string& certi) {
-        return false;
+        return certi == "ADV" || certi == "PRO" || certi == "EX";
     }
 
     ConditionCerti(const Grade &certi) :
