@@ -377,3 +377,16 @@ TEST(Condition, isValidBirthdayDay)
     EXPECT_EQ(true,  ConditionBirthdayDay::isValid("31"));
     EXPECT_EQ(false, ConditionBirthdayDay::isValid("32"));
 }
+
+TEST(Condition, isValidCerti)
+{
+    // ADV / PRO / EX 외의 내용은 모두 false로 판단해야 한다.
+    EXPECT_EQ(true,  ConditionCerti::isValid("EX"));
+    EXPECT_EQ(true,  ConditionCerti::isValid("PRO"));
+    EXPECT_EQ(true,  ConditionCerti::isValid("ADV"));
+
+    EXPECT_EQ(false, ConditionCerti::isValid(""));
+    EXPECT_EQ(false, ConditionCerti::isValid("PRO "));
+    EXPECT_EQ(false, ConditionCerti::isValid("PROO"));
+    EXPECT_EQ(false, ConditionCerti::isValid("INVALID_STRING"));
+}

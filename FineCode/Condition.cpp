@@ -431,6 +431,10 @@ private:
 
 class ConditionCerti : public Condition {
 public:
+    static bool isValid(const string& certi) {
+        return false;
+    }
+
     ConditionCerti(const Grade &certi) :
         certi_(certi) {
     }
