@@ -7,9 +7,6 @@
 using namespace std;
 
 class OutputManager {
-private:
-    string outputFileName_;
-
 public:
     void printResult(ICmd cmd) {
         // Not implemented yet
@@ -20,4 +17,7 @@ public:
         // case 2
         outputFile << "MOD, 17112609, FB NTAWR, CL4, 010 - 5645 - 6122, 20050520, PRO" << endl;
     }
+    
+private:
+    string outputFileName_;
 };
