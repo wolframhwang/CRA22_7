@@ -1,36 +1,8 @@
 ﻿#pragma once
 #include <string>
 #include <vector>
+#include "Condition.h"
 using namespace std;
-
-enum class CL {
-    CL1,
-    CL2,
-    CL3,
-    CL4,
-};
-
-enum class Grade {
-    ADV,
-    PRO,
-    EX,
-};
-
-struct PhoneNum {
-    int mid;
-    int end;
-};
-
-struct Name {
-    string first;
-    string last;
-};
-
-struct Date {
-    int year;
-    int month;
-    int day;
-};
 
 struct Employee {
     unsigned long employeeNum;

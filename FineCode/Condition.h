@@ -1,17 +1,49 @@
 #pragma once
 
-#include "Employee.h"
 #include <memory>
+#include <string>
+
+using namespace std;
+
+enum class CL {
+    CL1,
+    CL2,
+    CL3,
+    CL4,
+};
+
+enum class Grade {
+    ADV,
+    PRO,
+    EX,
+};
+
+struct PhoneNum {
+    int mid;
+    int end;
+};
+
+struct Name {
+    string first;
+    string last;
+};
+
+struct Date {
+    int year;
+    int month;
+    int day;
+};
 
 class Condition;
 using ConditionPtr = shared_ptr<Condition>;
+class Employee;
 
 class Condition {
 public:
     static ConditionPtr make(const string &type, const string &value);
-
+    
     virtual bool isEqual(const Employee &employee) const = 0;
-    virtual void set(Employee& employee) const = 0;
+    virtual void set(Employee &employee) const = 0;
 };
 
 class ConditionEmployeeNum : public Condition {
@@ -56,13 +88,8 @@ public:
         }
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.employeeNum == employeeNum_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.employeeNum = employeeNum_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     unsigned long employeeNum_;
@@ -92,13 +119,8 @@ public:
         first_(first) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.name.first == first_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.name.first = first_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     string first_;
@@ -128,13 +150,8 @@ public:
         last_(last) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.name.last == last_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.name.last = last_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     string last_;
@@ -173,21 +190,15 @@ public:
     }
 
     ConditionName(const string &first, const string &last) :
-        nameFirst(first), nameLast(last) {
+        first_(first), last_(last) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return nameFirst.isEqual(employee) && nameLast.isEqual(employee);
-    }
-
-    virtual void set(Employee &employee) const override {
-        nameFirst.set(employee);
-        nameLast.set(employee);
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
-    ConditionNameFirst nameFirst;
-    ConditionNameLast nameLast;
+    ConditionNameFirst first_;
+    ConditionNameLast last_;
 };
 
 class ConditionCl : public Condition {
@@ -233,13 +244,8 @@ public:
         cl_(cl) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.cl == cl_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.cl = cl_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     CL cl_;
@@ -271,13 +277,8 @@ public:
         mid_(mid) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.phoneNum.mid == mid_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.phoneNum.mid = mid_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int mid_;
@@ -309,13 +310,8 @@ public:
         end_(end) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.phoneNum.end == end_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.phoneNum.end = end_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int end_;
@@ -353,14 +349,8 @@ public:
         phoneNumMid_(mid), phoneNumEnd_(end) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return phoneNumMid_.isEqual(employee) && phoneNumEnd_.isEqual(employee);
-    }
-
-    virtual void set(Employee &employee) const override {
-        phoneNumMid_.set(employee);
-        phoneNumEnd_.set(employee);
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     ConditionPhoneNumMid phoneNumMid_;
@@ -393,13 +383,8 @@ public:
         year_(year) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.birthday.year == year_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.birthday.year = year_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int year_;
@@ -436,13 +421,8 @@ public:
         month_(month) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.birthday.month == month_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.birthday.month = month_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int month_;
@@ -479,13 +459,8 @@ public:
         day_(day) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.birthday.day == day_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.birthday.day = day_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int day_;
@@ -517,15 +492,8 @@ public:
         conditionBirthdayYear(year), conditionBirthdayMonth(month), conditionBirthdayDay(day) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return conditionBirthdayYear.isEqual(employee) && conditionBirthdayMonth.isEqual(employee) && conditionBirthdayDay.isEqual(employee);
-    }
-
-    virtual void set(Employee &employee) const override {
-        conditionBirthdayYear.set(employee);
-        conditionBirthdayMonth.set(employee);
-        conditionBirthdayDay.set(employee);
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     ConditionBirthdayYear  conditionBirthdayYear;
@@ -558,13 +526,8 @@ public:
         certi_(certi) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.certi == certi_;
-    }
-
-    virtual void set(Employee &employee) const override {
-        employee.certi = certi_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     Grade certi_;

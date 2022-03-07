@@ -1,4 +1,5 @@
 #include "Condition.h"
+#include "Employee.h"
 
 ConditionPtr Condition::make(const string& type, const string& value) {
     if (type == "employeeNum") {
@@ -68,4 +69,112 @@ ConditionPtr Condition::make(const string& type, const string& value) {
     }
 
     return nullptr;
+}
+
+bool ConditionEmployeeNum::isEqual(const Employee &employee) const {
+    return employee.employeeNum == employeeNum_;
+}
+
+void ConditionEmployeeNum::set(Employee &employee) const {
+    employee.employeeNum = employeeNum_;
+}
+
+bool ConditionNameFirst::isEqual(const Employee &employee) const {
+    return employee.name.first == first_;
+}
+
+void ConditionNameFirst::set(Employee &employee) const {
+    employee.name.first = first_;
+}
+
+bool ConditionNameLast::isEqual(const Employee &employee) const {
+    return employee.name.last == last_;
+}
+
+void ConditionNameLast::set(Employee &employee) const {
+    employee.name.last = last_;
+}
+
+bool ConditionName::isEqual(const Employee &employee) const {
+    return first_.isEqual(employee) && last_.isEqual(employee);
+}
+
+void ConditionName::set(Employee &employee) const {
+    first_.set(employee);
+    last_.set(employee);
+}
+
+bool ConditionCl::isEqual(const Employee &employee) const {
+    return employee.cl == cl_;
+}
+
+void ConditionCl::set(Employee &employee) const {
+    employee.cl = cl_;
+}
+
+bool ConditionPhoneNumMid::isEqual(const Employee &employee) const {
+    return employee.phoneNum.mid == mid_;
+}
+
+void ConditionPhoneNumMid::set(Employee &employee) const {
+    employee.phoneNum.mid = mid_;
+}
+
+bool ConditionPhoneNumEnd::isEqual(const Employee &employee) const {
+    return employee.phoneNum.end == end_;
+}
+
+void ConditionPhoneNumEnd::set(Employee &employee) const {
+    employee.phoneNum.end = end_;
+}
+
+bool ConditionPhoneNum::isEqual(const Employee &employee) const {
+    return phoneNumMid_.isEqual(employee) && phoneNumEnd_.isEqual(employee);
+}
+
+void ConditionPhoneNum::set(Employee &employee) const {
+    phoneNumMid_.set(employee);
+    phoneNumEnd_.set(employee);
+}
+
+bool ConditionBirthdayYear::isEqual(const Employee &employee) const {
+    return employee.birthday.year == year_;
+}
+
+void ConditionBirthdayYear::set(Employee &employee) const {
+    employee.birthday.year = year_;
+}
+
+bool ConditionBirthdayMonth::isEqual(const Employee &employee) const {
+    return employee.birthday.month == month_;
+}
+
+void ConditionBirthdayMonth::set(Employee &employee) const {
+    employee.birthday.month = month_;
+}
+
+bool ConditionBirthdayDay::isEqual(const Employee &employee) const {
+    return employee.birthday.day == day_;
+}
+
+void ConditionBirthdayDay::set(Employee &employee) const {
+    employee.birthday.day = day_;
+}
+
+bool ConditionBirthday::isEqual(const Employee &employee) const {
+    return conditionBirthdayYear.isEqual(employee) && conditionBirthdayMonth.isEqual(employee) && conditionBirthdayDay.isEqual(employee);
+}
+
+void ConditionBirthday::set(Employee &employee) const {
+    conditionBirthdayYear.set(employee);
+    conditionBirthdayMonth.set(employee);
+    conditionBirthdayDay.set(employee);
+}
+
+bool ConditionCerti::isEqual(const Employee &employee) const {
+    return employee.certi == certi_;
+}
+
+void ConditionCerti::set(Employee &employee) const {
+    employee.certi = certi_;
 }
