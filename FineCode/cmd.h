@@ -16,7 +16,7 @@ public:
     }
 
     virtual bool execute(const shared_ptr<IDataBase> database) = 0;
-    virtual string getResut() = 0;
+    virtual string getResult() = 0;
 
 protected:
     Result *result_;
@@ -38,7 +38,7 @@ public:
 
         return true;
     }
-    virtual string getResut() override  {
+    virtual string getResult() override  {
         return result_->toString();
     }
 private:
@@ -50,7 +50,7 @@ public:
     ICmdTarget(ConditionPtr targetCondition, Result *result) :
         ICmd(result), targetCondition_(targetCondition) {
     }
-    virtual string getResut() override {
+    virtual string getResult() override {
         return result_->toString();
     }
 protected:
