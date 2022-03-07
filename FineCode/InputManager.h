@@ -92,6 +92,7 @@ private:
     vector<string> parsedCmd_;
 
     void setEmployeeNum(shared_ptr<Employee> employee) {
+        // REMIND: Need to append "19" or "20" for easy sorting.
         employee->employeeNum = stoi(parsedCmd_.at(INPUT_EMPLOYEENUM));
     }
 
