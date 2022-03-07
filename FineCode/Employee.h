@@ -40,8 +40,14 @@ struct Employee {
     Date birthday;
     Grade certi;
 
+    Employee(unsigned long _employeeNum, Name _name, CL _cl, 
+        PhoneNum _phoneNum, Date _birthday, Grade _certi) : 
+        employeeNum(_employeeNum), name(_name), cl(_cl), 
+        phoneNum(_phoneNum), birthday(_birthday), certi(_certi) {
+    }
+
     Employee(const vector<string>& params) {
-        auto paramEmployeeNum = params[4];
+        auto paramEmployeeNum = params[0];
         unsigned year = (paramEmployeeNum[0] - '0') * 10 + (paramEmployeeNum[1] - '0');
         if (year >= 69) {
             employeeNum = stoul("19" + paramEmployeeNum);
@@ -51,7 +57,7 @@ struct Employee {
             employeeNum = stoul("20" + paramEmployeeNum);
         }
 
-        auto paramName = params[5];
+        auto paramName = params[1];
         size_t pos = paramName.find(' ');
         if (pos > 0 && pos < paramName.length() - 1) {
             string paramFirst = { paramName.c_str(), pos};
@@ -61,7 +67,7 @@ struct Employee {
             name.last  = paramLast;
         }
 
-        auto paramCl = params[6];
+        auto paramCl = params[2];
         cl = CL::CL1;
         switch (paramCl[2]) {
         case '1':
@@ -78,16 +84,16 @@ struct Employee {
             break;
         }
 
-        auto paramPhoneNum = params[7];
+        auto paramPhoneNum = params[3];
         phoneNum.mid = stoi(string(paramPhoneNum.c_str() + 4, 4));
         phoneNum.end = stoi(string(paramPhoneNum.c_str() + 9, 4));
 
-        auto paramBirthday = params[8];
+        auto paramBirthday = params[4];
         birthday.year  = stoi(string(paramBirthday.c_str(), 4));
         birthday.month = stoi(string(paramBirthday.c_str() + 4, 2));
         birthday.day   = stoi(string(paramBirthday.c_str() + 6, 2));
 
-        auto paramCerti = params[9];
+        auto paramCerti = params[5];
         certi = Grade::ADV;
         if (paramCerti == "ADV") {
             certi = Grade::ADV;
