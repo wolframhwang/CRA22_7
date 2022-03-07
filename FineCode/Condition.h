@@ -695,8 +695,39 @@ public:
         return certi == "ADV" || certi == "PRO" || certi == "EX";
     }
 
-    ConditionCerti(const Grade &certi) :
+    ConditionCerti(const Grade& certi) :
         certi_(certi) {
+    }
+
+    ConditionCerti(const string& certi) {
+        if (certi == "ADV") {
+            certi_ = Grade::ADV;
+        }
+        else if (certi == "PRO") {
+            certi_ = Grade::PRO;
+        }
+        else if (certi == "EX") {
+            certi_ = Grade::EX;
+        }
+        else {
+            certi_ = Grade::INVALID;
+        }
+    }
+
+    operator Grade() const {
+        return certi_;
+    }
+
+    operator string() const {
+        switch (certi_) {
+        case Grade::ADV:
+            return "ADV";
+        case Grade::PRO:
+            return "PRO";
+        case Grade::EX:
+            return "EX";
+        }
+        return "INVALID";
     }
 
     virtual bool isEqual(const Employee &employee) const override;
