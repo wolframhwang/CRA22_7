@@ -61,6 +61,7 @@ public:
     }
 
     void getCmd() {
+        // TODO: Need to avoid creating virtual class
         //shared_ptr<ICmd> c = make_shared<ICmd>();
         cmdParser(inputFileName_);
         //c->setParsedCmd(parsedCmd_);
