@@ -15,6 +15,7 @@ shared_ptr<ICmd> ICmd::getCmd(const vector<string>& params) {
             Result *result = new ResultCount(type);
             return make_shared<CmdAdd>(CmdAdd{ employee, result });
         }
+        throw std::invalid_argument("getCmd() : ADD");
     }
     else {
         auto targetType = params[4];
