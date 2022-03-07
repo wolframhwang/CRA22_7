@@ -7,25 +7,7 @@
 
 class ICmd {
 public:
-    static shared_ptr<ICmd> getCmd(const vector<string> &params) {
-        auto type = params[0];
-
-        if (type == "ADD") {
-            if (ConditionEmployeeNum::isValid(params[4]) &&
-                ConditionName::isValid(params[5]) &&
-                ConditionCl::isValid(params[6]) &&
-                ConditionPhoneNum::isValid(params[7]) &&
-                ConditionBirthday::isValid(params[8]) &&
-                ConditionCerti::isValid(params[9])) {
-            
-                Employee *employee = new Employee(params);
-                Result *result = new ResultCount(type);
-                return make_shared<CmdAdd>(CmdAdd{ employee, result });
-            }
-        }
-        
-        return nullptr;
-    }
+    static shared_ptr<ICmd> getCmd(const vector<string> &params);
 
     ICmd(Result* result) :
         result_(result) {
@@ -53,17 +35,17 @@ private:
 
 class ICmdTarget : public ICmd {
 public:
-    ICmdTarget(Condition *targetCondition, Result *result) :
+    ICmdTarget(ConditionPtr targetCondition, Result *result) :
         ICmd(result), targetCondition_(targetCondition) {
     }
 
 protected:
-    Condition *targetCondition_;
+    ConditionPtr targetCondition_;
 };
 
 class CmdSearch : public ICmdTarget {
 public:
-    CmdSearch(Condition *targetCondition, Result *result) :
+    CmdSearch(ConditionPtr targetCondition, Result *result) :
         ICmdTarget(targetCondition, result) {
     }
 
@@ -74,7 +56,7 @@ public:
 
 class CmdModify : public ICmdTarget {
 public:
-    CmdModify(Condition *targetCondition, Condition *modifyCondition, Result *result) :
+    CmdModify(ConditionPtr targetCondition, ConditionPtr modifyCondition, Result *result) :
         ICmdTarget(targetCondition, result), modifyCondition_(modifyCondition) {
     }
 
@@ -83,19 +65,16 @@ public:
     }
 
 private:
-    Condition *modifyCondition_;
+    ConditionPtr modifyCondition_;
 };
 
 class CmdErase : public ICmdTarget {
 public:
-    CmdErase(Condition *targetCondition, Result *result) :
+    CmdErase(ConditionPtr targetCondition, Result *result) :
         ICmdTarget(targetCondition, result) {
     }
 
     virtual bool execute(const shared_ptr<IDataBase> database) override {
         database->erase(*targetCondition_, *result_);
     }
-
-private:
-    Condition *modifyCondition_;
 };
