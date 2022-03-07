@@ -42,6 +42,12 @@ private:
     int entryCount_;
 };
 
+struct EmployeeCompare {
+    bool operator()(const Employee* e1, const Employee* e2) {
+        return e1->employeeNum > e2->employeeNum;
+    }
+};
+
 class ResultTop : public Result {    
 public:
     ResultTop(string cmd, int printCount) : 
@@ -72,5 +78,5 @@ public:
 
 private:
     int printCount_;
-    priority_queue<const Employee*> employees_;
+    priority_queue<const Employee*, std::vector<const Employee*>, EmployeeCompare> employees_;
 };

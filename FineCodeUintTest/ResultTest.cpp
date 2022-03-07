@@ -16,8 +16,9 @@ TEST(UTResult, toString) {
     Result *resultTop = new ResultTop("SCH", 5);
     EXPECT_EQ(resultTop->toString(), "SCH,NONE");
     resultTop->insert(employee1);
-    EXPECT_EQ(resultTop->toString(), "SCH,15123099,VXIHXOTH JHOP,CL3,010-3112-2609,19771211,ADV");
+    EXPECT_EQ(resultTop->toString(), "SCH,15123099,VXIHTOTH JHOP,CL3,010-3112-2609,19771211,ADV\n");
+    resultTop->insert(employee1);
     resultTop->insert(employee2);
-    EXPECT_EQ(resultTop->toString(), "SCH,15123099,VXIHXOTH JHOP,CL3,010-3112-2609,19771211,ADV\n"s +
-                                     "SCH,17112609,FB NTAWR,CL4,010-5645-6122,19861203,PRO");
+    EXPECT_EQ(resultTop->toString(), "SCH,15123099,VXIHTOTH JHOP,CL3,010-3112-2609,19771211,ADV\n"
+                                     "SCH,17112609,FB NTAWR,CL4,010-5645-6122,19861103,PRO\n");
 }
