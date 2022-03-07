@@ -72,27 +72,32 @@ ConditionPtr Condition::make(const string& type, const string& value) {
 }
 
 bool ConditionEmployeeNum::isEqual(const Employee &employee) const {
-    return employee.employeeNum == employeeNum_;
+    return employee.employeeNum == *this;
 }
 
 void ConditionEmployeeNum::set(Employee &employee) const {
     employee.employeeNum = employeeNum_;
 }
 
+ConditionEmployeeNum::operator string() const {
+    auto result = to_string(employeeNum_);
+    return string(result.c_str() + 2, 8);
+}
+
 bool ConditionNameFirst::isEqual(const Employee &employee) const {
-    return employee.name.first == first_;
+    return employee.name.first_.first_ == first_;
 }
 
 void ConditionNameFirst::set(Employee &employee) const {
-    employee.name.first = first_;
+    employee.name.first_ = first_;
 }
 
 bool ConditionNameLast::isEqual(const Employee &employee) const {
-    return employee.name.last == last_;
+    return employee.name.last_.last_ == last_;
 }
 
 void ConditionNameLast::set(Employee &employee) const {
-    employee.name.last = last_;
+    employee.name.last_ = last_;
 }
 
 bool ConditionName::isEqual(const Employee &employee) const {

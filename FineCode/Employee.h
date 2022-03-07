@@ -5,8 +5,8 @@
 using namespace std;
 
 struct Employee {
-    unsigned long employeeNum;
-    Name name;
+    ConditionEmployeeNum employeeNum;
+    ConditionName name;
     CL cl;
     PhoneNum phoneNum;
     Date birthday;
@@ -18,27 +18,7 @@ struct Employee {
         phoneNum(_phoneNum), birthday(_birthday), certi(_certi) {
     }
 
-    Employee(const vector<string>& params) {
-        auto paramEmployeeNum = params[0];
-        unsigned year = (paramEmployeeNum[0] - '0') * 10 + (paramEmployeeNum[1] - '0');
-        if (year >= 69) {
-            employeeNum = stoul("19" + paramEmployeeNum);
-        }
-        else
-        {
-            employeeNum = stoul("20" + paramEmployeeNum);
-        }
-
-        auto paramName = params[1];
-        size_t pos = paramName.find(' ');
-        if (pos > 0 && pos < paramName.length() - 1) {
-            string paramFirst = { paramName.c_str(), pos};
-            string paramLast  = { paramName.c_str() + pos + 1, paramName.length() - paramFirst.length() - 1};
-
-            name.first = paramFirst;
-            name.last  = paramLast;
-        }
-
+    Employee(const vector<string>& params) : employeeNum(params[0]), name(params[1]) {
         auto paramCl = params[2];
         cl = CL::CL1;
         switch (paramCl[2]) {
@@ -82,10 +62,14 @@ struct Employee {
         return employeeNum < other.employeeNum;
     }
 
+    bool operator==(const Employee& other) const {
+        return employeeNum == other.employeeNum;
+    }
+
     string toString(void) const {
         string result;
-        result += toStringEmployeeNum() + ",";
-        result += name.first + " " + name.last + ",";
+        result += string(employeeNum) + ",";
+        result += string(name) + ",";
         result += toStringCl() + ",";
         result += "010-" + toStringNum(phoneNum.mid, 4) + "-" + toStringNum(phoneNum.end, 4) + ",";
         result += toStringNum(birthday.year, 4) + toStringNum(birthday.month, 2) + toStringNum(birthday.day, 2) + ",";
@@ -94,11 +78,6 @@ struct Employee {
     }
 
 private:
-    string toStringEmployeeNum(void) const {
-        auto result = to_string(employeeNum);
-        return string(result.c_str() + 2, 8);
-    }
-
     string toStringCl(void) const {
         switch (cl) {
         case CL::CL1:

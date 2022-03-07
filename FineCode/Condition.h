@@ -36,7 +36,7 @@ struct Date {
 
 class Condition;
 using ConditionPtr = shared_ptr<Condition>;
-class Employee;
+struct Employee;
 
 class Condition {
 public:
@@ -44,6 +44,7 @@ public:
     
     virtual bool isEqual(const Employee &employee) const = 0;
     virtual void set(Employee &employee) const = 0;
+    virtual operator string() const { return ""; };
 };
 
 class ConditionEmployeeNum : public Condition {
@@ -73,6 +74,8 @@ public:
         return true;
     }
 
+    ConditionEmployeeNum() : employeeNum_(0) {}
+
     ConditionEmployeeNum(const unsigned long &employeeNum) :
         employeeNum_(employeeNum) {
     }
@@ -88,8 +91,13 @@ public:
         }
     }
 
+    operator unsigned long() const {
+        return employeeNum_;
+    }
+
     virtual bool isEqual(const Employee &employee) const override;
     virtual void set(Employee &employee) const override;
+    virtual operator string() const override;
 
 private:
     unsigned long employeeNum_;
@@ -115,8 +123,13 @@ public:
         return true;
     }
 
+    ConditionNameFirst() {}
     ConditionNameFirst(const string &first) :
         first_(first) {
+    }
+
+    operator string() const {
+        return first_;
     }
 
     virtual bool isEqual(const Employee &employee) const override;
@@ -146,8 +159,13 @@ public:
         return true;
     }
 
+    ConditionNameLast() {}
     ConditionNameLast(const string &last) :
         last_(last) {
+    }
+
+    operator string() const {
+        return last_;
     }
 
     virtual bool isEqual(const Employee &employee) const override;
@@ -160,16 +178,7 @@ private:
 class ConditionName : public Condition {
 public:
     static ConditionPtr make(const string& name) {
-        size_t pos = name.find(' ');
-
-        if (pos > 0 && pos < name.length() - 1) {
-            string first = { name.c_str(), pos};
-            string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
-
-            return make_shared<ConditionName>(first, last);
-        }
-
-        return nullptr;
+        return make_shared<ConditionName>(name);
     }
 
     static bool isValid(const string &name) {
@@ -193,10 +202,26 @@ public:
         first_(first), last_(last) {
     }
 
+    ConditionName(const Name &name) :
+        first_(name.first), last_(name.last) {
+    }
+
+    ConditionName(const string &name) {
+        size_t pos = name.find(' ');
+        string first = { name.c_str(), pos};
+        string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
+
+        first_ = first;
+        last_  = last;
+    }
+
+    operator string() const {
+        return string(first_) + " " + string(last_);
+    }
+
     virtual bool isEqual(const Employee &employee) const override;
     virtual void set(Employee &employee) const override;
 
-private:
     ConditionNameFirst first_;
     ConditionNameLast last_;
 };
