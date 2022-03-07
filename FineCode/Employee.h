@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <string>
+#include <vector>
 using namespace std;
 
 enum class CL {
@@ -38,6 +39,66 @@ struct Employee {
     PhoneNum phoneNum;
     Date birthday;
     Grade certi;
+
+    Employee(const vector<string>& params) {
+        auto paramEmployeeNum = params[4];
+        unsigned year = (paramEmployeeNum[0] - '0') * 10 + (paramEmployeeNum[1] - '0');
+        if (year >= 69) {
+            employeeNum = stoul("19" + paramEmployeeNum);
+        }
+        else
+        {
+            employeeNum = stoul("20" + paramEmployeeNum);
+        }
+
+        auto paramName = params[5];
+        size_t pos = paramName.find(' ');
+        if (pos > 0 && pos < paramName.length() - 1) {
+            string paramFirst = { paramName.c_str(), pos};
+            string paramLast  = { paramName.c_str() + pos + 1, paramName.length() - paramFirst.length() - 1};
+
+            name.first = paramFirst;
+            name.last  = paramLast;
+        }
+
+        auto paramCl = params[6];
+        cl = CL::CL1;
+        switch (paramCl[2]) {
+        case '1':
+            cl = CL::CL1;
+            break;
+        case '2':
+            cl = CL::CL2;
+            break;
+        case '3':
+            cl = CL::CL3;
+            break;
+        case '4':
+            cl = CL::CL4;
+            break;
+        }
+
+        auto paramPhoneNum = params[7];
+        phoneNum.mid = stoi(string(paramPhoneNum.c_str() + 4, 4));
+        phoneNum.end = stoi(string(paramPhoneNum.c_str() + 9, 4));
+
+        auto paramBirthday = params[8];
+        birthday.year  = stoi(string(paramBirthday.c_str(), 4));
+        birthday.month = stoi(string(paramBirthday.c_str() + 4, 2));
+        birthday.day   = stoi(string(paramBirthday.c_str() + 6, 2));
+
+        auto paramCerti = params[9];
+        certi = Grade::ADV;
+        if (paramCerti == "ADV") {
+            certi = Grade::ADV;
+        }
+        else if (paramCerti == "PRO") {
+            certi = Grade::PRO;
+        }
+        else if (paramCerti == "EX") {
+            certi = Grade::EX;
+        }
+    }
 
     bool operator<(const Employee& other) const {
         return employeeNum < other.employeeNum;
