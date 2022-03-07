@@ -4,6 +4,7 @@ x64
 *.user
 *.vcxproj
 *.log
+*.filters
 output.txt
 packages
 packages.config
