@@ -200,32 +200,32 @@ public:
         return ConditionNameFirst::isValid(first) && ConditionNameLast::isValid(last);
     }
 
-    ConditionName(const string &first, const string &last) :
-        first_(first), last_(last) {
+    ConditionName(const string &_first, const string &_last) :
+        first(_first), last(_last) {
     }
 
     ConditionName(const Name &name) :
-        first_(name.first), last_(name.last) {
+        first(name.first), last(name.last) {
     }
 
     ConditionName(const string &name) {
         size_t pos = name.find(' ');
-        string first = { name.c_str(), pos};
-        string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
+        string _first = { name.c_str(), pos};
+        string _last  = { name.c_str() + pos + 1, name.length() - _first.length() - 1};
 
-        first_ = first;
-        last_  = last;
+        first = _first;
+        last  = _last;
     }
 
     operator string() const {
-        return string(first_) + " " + string(last_);
+        return string(first) + " " + string(last);
     }
 
     virtual bool isEqual(const Employee &employee) const override;
     virtual void set(Employee &employee) const override;
 
-    ConditionNameFirst first_;
-    ConditionNameLast last_;
+    ConditionNameFirst first;
+    ConditionNameLast last;
 };
 
 class ConditionCl : public Condition {
@@ -336,8 +336,20 @@ public:
         return true;
     }
 
+    ConditionPhoneNumMid() :
+        ConditionPhoneNumMid(0) {
+    }
+
     ConditionPhoneNumMid(int mid) :
         mid_(mid) {
+    }
+
+    ConditionPhoneNumMid(const string& mid) :
+        mid_(stoi(mid)) {
+    }
+
+    operator int() const {
+        return mid_;
     }
 
     virtual bool isEqual(const Employee &employee) const override;
@@ -369,8 +381,20 @@ public:
         return true;
     }
 
+    ConditionPhoneNumEnd() :
+        ConditionPhoneNumEnd(0) {
+    }
+
     ConditionPhoneNumEnd(int end) :
         end_(end) {
+    }
+
+    ConditionPhoneNumEnd(const string& end) :
+        end_(stoi(end)) {
+    }
+
+    operator int() const {
+        return end_;
     }
 
     virtual bool isEqual(const Employee &employee) const override;
@@ -383,9 +407,7 @@ private:
 class ConditionPhoneNum : public Condition {
 public:
     static ConditionPtr make(const string& phoneNum) {
-        auto mid = stoi(string(phoneNum.c_str() + 4, 4));
-        auto end = stoi(string(phoneNum.c_str() + 9, 4));
-        return make_shared<ConditionPhoneNum>(mid, end);
+        return make_shared<ConditionPhoneNum>(phoneNum);
     }
 
     static bool isValid(const string& phoneNum) {
@@ -408,16 +430,29 @@ public:
         return ConditionPhoneNumMid::isValid(phoneNumMid) && ConditionPhoneNumEnd::isValid(phoneNumEnd);
     }
 
-    ConditionPhoneNum(int mid, int end) :
-        phoneNumMid_(mid), phoneNumEnd_(end) {
+    ConditionPhoneNum(int _mid, int _end) :
+        mid(_mid), end(_end) {
+    }
+
+    ConditionPhoneNum(const PhoneNum& phoneNum) :
+        mid(phoneNum.mid), end(phoneNum.end) {
+    }
+
+    ConditionPhoneNum(const string& phoneNum) {
+        mid = string(phoneNum.c_str() + 4, 4);
+        end = string(phoneNum.c_str() + 9, 4);
+    }
+
+    operator string() const {
+        return "010-" + string(mid) + "-" + string(end);
     }
 
     virtual bool isEqual(const Employee &employee) const override;
     virtual void set(Employee &employee) const override;
 
-private:
-    ConditionPhoneNumMid phoneNumMid_;
-    ConditionPhoneNumEnd phoneNumEnd_;
+public:
+    ConditionPhoneNumMid mid;
+    ConditionPhoneNumEnd end;
 };
 
 class ConditionBirthdayYear : public Condition {

@@ -85,28 +85,28 @@ ConditionEmployeeNum::operator string() const {
 }
 
 bool ConditionNameFirst::isEqual(const Employee &employee) const {
-    return employee.name.first_.first_ == first_;
+    return employee.name.first.first_ == first_;
 }
 
 void ConditionNameFirst::set(Employee &employee) const {
-    employee.name.first_ = first_;
+    employee.name.first = first_;
 }
 
 bool ConditionNameLast::isEqual(const Employee &employee) const {
-    return employee.name.last_.last_ == last_;
+    return employee.name.last.last_ == last_;
 }
 
 void ConditionNameLast::set(Employee &employee) const {
-    employee.name.last_ = last_;
+    employee.name.last = last_;
 }
 
 bool ConditionName::isEqual(const Employee &employee) const {
-    return first_.isEqual(employee) && last_.isEqual(employee);
+    return first.isEqual(employee) && last.isEqual(employee);
 }
 
 void ConditionName::set(Employee &employee) const {
-    first_.set(employee);
-    last_.set(employee);
+    first.set(employee);
+    last.set(employee);
 }
 
 bool ConditionCl::isEqual(const Employee &employee) const {
@@ -134,12 +134,12 @@ void ConditionPhoneNumEnd::set(Employee &employee) const {
 }
 
 bool ConditionPhoneNum::isEqual(const Employee &employee) const {
-    return phoneNumMid_.isEqual(employee) && phoneNumEnd_.isEqual(employee);
+    return mid.isEqual(employee) && end.isEqual(employee);
 }
 
 void ConditionPhoneNum::set(Employee &employee) const {
-    phoneNumMid_.set(employee);
-    phoneNumEnd_.set(employee);
+    mid.set(employee);
+    end.set(employee);
 }
 
 bool ConditionBirthdayYear::isEqual(const Employee &employee) const {

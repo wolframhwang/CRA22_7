@@ -18,27 +18,27 @@ TEST(Condition, isEqual)
     EXPECT_EQ(true,  conditionName.isEqual(employee1));
     EXPECT_EQ(false, conditionName.isEqual(employee2));
 
-    ConditionNameFirst conditionNameFirst = employee1.name.first_;
+    ConditionNameFirst conditionNameFirst = employee1.name.first;
     EXPECT_EQ(true,  conditionNameFirst.isEqual(employee1));
     EXPECT_EQ(false, conditionNameFirst.isEqual(employee2));
 
-    ConditionNameLast conditionNameLast = employee1.name.last_;
+    ConditionNameLast conditionNameLast = employee1.name.last;
     EXPECT_EQ(true,  conditionNameLast.isEqual(employee1));
     EXPECT_EQ(false, conditionNameLast.isEqual(employee2));
 
-    ConditionCl conditionCl( employee1.cl );
+    ConditionCl conditionCl = employee1.cl;
     EXPECT_EQ(true,  conditionCl.isEqual(employee1));
     EXPECT_EQ(false, conditionCl.isEqual(employee2));
 
-    ConditionPhoneNum conditionPhoneNum( employee1.phoneNum.mid, employee1.phoneNum.end );
+    ConditionPhoneNum conditionPhoneNum = employee1.phoneNum;
     EXPECT_EQ(true,  conditionPhoneNum.isEqual(employee1));
     EXPECT_EQ(false, conditionPhoneNum.isEqual(employee2));
 
-    ConditionPhoneNumMid conditionPhoneNumMid( employee1.phoneNum.mid );
+    ConditionPhoneNumMid conditionPhoneNumMid = employee1.phoneNum.mid;
     EXPECT_EQ(true,  conditionPhoneNumMid.isEqual(employee1));
     EXPECT_EQ(false, conditionPhoneNumMid.isEqual(employee2));
 
-    ConditionPhoneNumEnd conditionPhoneNumEnd( employee1.phoneNum.end );
+    ConditionPhoneNumEnd conditionPhoneNumEnd = employee1.phoneNum.end;
     EXPECT_EQ(true,  conditionPhoneNumEnd.isEqual(employee1));
     EXPECT_EQ(false, conditionPhoneNumEnd.isEqual(employee2));
 
@@ -79,19 +79,19 @@ TEST(Condition, set)
     conditionEmployeeNum.set(employee2);
     EXPECT_EQ(true, conditionEmployeeNum.isEqual(employee2));
 
-    ConditionName conditionName( employee1.name.first_, employee1.name.last_ );
-    ConditionName conditionNameBackup( employee2.name.first_, employee2.name.last_ );
+    ConditionName conditionName( employee1.name.first, employee1.name.last );
+    ConditionName conditionNameBackup( employee2.name.first, employee2.name.last );
     EXPECT_EQ(false, conditionName.isEqual(employee2));
     conditionName.set(employee2);
     EXPECT_EQ(true, conditionName.isEqual(employee2));
     conditionNameBackup.set(employee2);
 
-    ConditionNameFirst conditionNameFirst = employee1.name.first_;
+    ConditionNameFirst conditionNameFirst = employee1.name.first;
     EXPECT_EQ(false, conditionNameFirst.isEqual(employee2));
     conditionNameFirst.set(employee2);
     EXPECT_EQ(true, conditionNameFirst.isEqual(employee2));
 
-    ConditionNameLast conditionNameLast = employee1.name.last_;
+    ConditionNameLast conditionNameLast = employee1.name.last;
     EXPECT_EQ(false, conditionNameLast.isEqual(employee2));
     conditionNameLast.set(employee2);
     EXPECT_EQ(true, conditionNameLast.isEqual(employee2));

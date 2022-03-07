@@ -101,8 +101,8 @@ private:
         while (getline(ss, word, ' '))
             parsedFullName.push_back(word);
 
-        employee->name.first_ = parsedFullName.at(0);
-        employee->name.last_ = parsedFullName.at(1);
+        employee->name.first = parsedFullName.at(0);
+        employee->name.last = parsedFullName.at(1);
     }
 
     void setCl(shared_ptr<Employee> employee) {
