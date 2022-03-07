@@ -16,11 +16,8 @@ public:
 
 class ConditionEmployeeNum : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& employeeNum) {
-        if (isValid(employeeNum)) {
-            return make_shared<ConditionEmployeeNum>(employeeNum);
-        }
-        return nullptr;
+    static ConditionPtr make(const string& employeeNum) {
+        return make_shared<ConditionEmployeeNum>(employeeNum);
     }
 
     static bool isValid(const string &employeeNum) {
@@ -73,11 +70,8 @@ private:
 
 class ConditionNameFirst : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& first) {
-        if (isValid(first)) {
-            return make_shared<ConditionNameFirst>(first);
-        }
-        return nullptr;
+    static ConditionPtr make(const string& first) {
+        return make_shared<ConditionNameFirst>(first);
     }
 
     static bool isValid(const string &first) {
@@ -112,11 +106,8 @@ private:
 
 class ConditionNameLast : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& last) {
-        if (isValid(last)) {
-            return make_shared<ConditionNameLast>(last);
-        }
-        return nullptr;
+    static ConditionPtr make(const string& last) {
+        return make_shared<ConditionNameLast>(last);
     }
 
     static bool isValid(const string &last) {
@@ -151,16 +142,14 @@ private:
 
 class ConditionName : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& name) {
-        if (isValid(name)) {
-            size_t pos = name.find(' ');
+    static ConditionPtr make(const string& name) {
+        size_t pos = name.find(' ');
 
-            if (pos > 0 && pos < name.length() - 1) {
-                string first = { name.c_str(), pos};
-                string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
+        if (pos > 0 && pos < name.length() - 1) {
+            string first = { name.c_str(), pos};
+            string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
 
-                return make_shared<ConditionName>(first, last);
-            }
+            return make_shared<ConditionName>(first, last);
         }
 
         return nullptr;
@@ -203,29 +192,25 @@ private:
 
 class ConditionCl : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& clString) {
-        if (isValid(clString)) {
-            CL cl;
+    static ConditionPtr make(const string& clString) {
+        CL cl;
 
-            switch (clString[2]) {
-            case '1':
-                cl = CL::CL1;
-                break;
-            case '2':
-                cl = CL::CL2;
-                break;
-            case '3':
-                cl = CL::CL3;
-                break;
-            case '4':
-                cl = CL::CL4;
-                break;
-            }
-
-            return make_shared<ConditionCl>(cl);
+        switch (clString[2]) {
+        case '1':
+            cl = CL::CL1;
+            break;
+        case '2':
+            cl = CL::CL2;
+            break;
+        case '3':
+            cl = CL::CL3;
+            break;
+        case '4':
+            cl = CL::CL4;
+            break;
         }
 
-        return nullptr;
+        return make_shared<ConditionCl>(cl);
     }
 
     static bool isValid(const string& cl) {
@@ -262,12 +247,8 @@ private:
 
 class ConditionPhoneNumMid : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& mid) {
-        if (isValid(mid)) {
-            return make_shared<ConditionPhoneNumMid>(stoi(mid));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& mid) {
+        return make_shared<ConditionPhoneNumMid>(stoi(mid));
     }
 
     static bool isValid(const string& mid) {
@@ -304,12 +285,8 @@ private:
 
 class ConditionPhoneNumEnd : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& end) {
-        if (isValid(end)) {
-            return make_shared<ConditionPhoneNumEnd>(stoi(end));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& end) {
+        return make_shared<ConditionPhoneNumEnd>(stoi(end));
     }
 
     static bool isValid(const string& end) {
@@ -346,14 +323,10 @@ private:
 
 class ConditionPhoneNum : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& phoneNum) {
-        if (isValid(phoneNum)) {
-            auto mid = stoi(string(phoneNum.c_str() + 4, 4));
-            auto end = stoi(string(phoneNum.c_str() + 9, 4));
-            return make_shared<ConditionPhoneNum>(mid, end);
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& phoneNum) {
+        auto mid = stoi(string(phoneNum.c_str() + 4, 4));
+        auto end = stoi(string(phoneNum.c_str() + 9, 4));
+        return make_shared<ConditionPhoneNum>(mid, end);
     }
 
     static bool isValid(const string& phoneNum) {
@@ -396,12 +369,8 @@ private:
 
 class ConditionBirthdayYear : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& year) {
-        if (isValid(year)) {
-            return make_shared<ConditionBirthdayYear>(stoi(year));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& year) {
+        return make_shared<ConditionBirthdayYear>(stoi(year));
     }
 
     static bool isValid(const string& year) {
@@ -438,12 +407,8 @@ private:
 
 class ConditionBirthdayMonth : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& month) {
-        if (isValid(month)) {
-            return make_shared<ConditionBirthdayMonth>(stoi(month));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& month) {
+        return make_shared<ConditionBirthdayMonth>(stoi(month));
     }
 
     static bool isValid(const string& month) {
@@ -485,12 +450,8 @@ private:
 
 class ConditionBirthdayDay : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& day) {
-        if (isValid(day)) {
-            return make_shared<ConditionBirthdayDay>(stoi(day));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& day) {
+        return make_shared<ConditionBirthdayDay>(stoi(day));
     }
 
     static bool isValid(const string& day) {
@@ -532,15 +493,11 @@ private:
 
 class ConditionBirthday : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& birthday) {
-        if (isValid(birthday)) {
-            auto year  = stoi(string(birthday.c_str(), 4));
-            auto month = stoi(string(birthday.c_str() + 4, 2));
-            auto day   = stoi(string(birthday.c_str() + 6, 2));
-            return make_shared<ConditionBirthday>(year, month, day);
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& birthday) {
+        auto year  = stoi(string(birthday.c_str(), 4));
+        auto month = stoi(string(birthday.c_str() + 4, 2));
+        auto day   = stoi(string(birthday.c_str() + 6, 2));
+        return make_shared<ConditionBirthday>(year, month, day);
     }
 
     static bool isValid(const string& birthday) {
@@ -578,23 +535,19 @@ private:
 
 class ConditionCerti : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& certiString) {
-        if (isValid(certiString)) {
-            Grade certi;
-            if (certiString == "ADV") {
-                certi = Grade::ADV;
-            }
-            else if (certiString == "PRO") {
-                certi = Grade::PRO;
-            }
-            else if (certiString == "EX") {
-                certi = Grade::EX;
-            }
-
-            return make_shared<ConditionCerti>(certi);
+    static ConditionPtr make(const string& certiString) {
+        Grade certi;
+        if (certiString == "ADV") {
+            certi = Grade::ADV;
+        }
+        else if (certiString == "PRO") {
+            certi = Grade::PRO;
+        }
+        else if (certiString == "EX") {
+            certi = Grade::EX;
         }
 
-        return nullptr;
+        return make_shared<ConditionCerti>(certi);
     }
 
     static bool isValid(const string& certi) {

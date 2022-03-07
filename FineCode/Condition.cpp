@@ -2,43 +2,69 @@
 
 ConditionPtr Condition::make(const string& type, const string& value) {
     if (type == "employeeNum") {
-        return ConditionEmployeeNum::checkAndMake(value);
+        if (ConditionEmployeeNum::isValid(value)) {
+            return ConditionEmployeeNum::make(value);
+        }
     }
     else if (type == "name") {
-        return ConditionName::checkAndMake(value);
+        if (ConditionName::isValid(value)) {
+            return ConditionName::make(value);
+        }
     }
     else if (type == "nameFirst") {
-        return ConditionNameFirst::checkAndMake(value);
+        if (ConditionNameFirst::isValid(value)) {
+            return ConditionNameFirst::make(value);
+        }
     }
     else if (type == "nameLast") {
-        return ConditionNameLast::checkAndMake(value);
+        if (ConditionNameLast::isValid(value)) {
+            return ConditionNameLast::make(value);
+        }
     }
     else if (type == "cl") {
-        return ConditionCl::checkAndMake(value);
+        if (ConditionCl::isValid(value)) {
+            return ConditionCl::make(value);
+        }
     }
     else if (type == "phoneNum") {
-        return ConditionPhoneNum::checkAndMake(value);
+        if (ConditionPhoneNum::isValid(value)) {
+            return ConditionPhoneNum::make(value);
+        }
     }
     else if (type == "phoneNumMid") {
-        return ConditionPhoneNumMid::checkAndMake(value);
+        if (ConditionPhoneNumMid::isValid(value)) {
+            return ConditionPhoneNumMid::make(value);
+        }
     }
     else if (type == "phoneNumEnd") {
-        return ConditionPhoneNumEnd::checkAndMake(value);
+        if (ConditionPhoneNumEnd::isValid(value)) {
+            return ConditionPhoneNumEnd::make(value);
+        }
     }
     else if (type == "birthday") {
-        return ConditionBirthday::checkAndMake(value);
+        if (ConditionBirthday::isValid(value)) {
+            return ConditionBirthday::make(value);
+        }
     }
     else if (type == "birthdayYear") {
-        return ConditionBirthdayYear::checkAndMake(value);
+        if (ConditionBirthdayYear::isValid(value)) {
+            return ConditionBirthdayYear::make(value);
+        }
     }
     else if (type == "birthdayMonth") {
-        return ConditionBirthdayMonth::checkAndMake(value);
+        if (ConditionBirthdayMonth::isValid(value)) {
+            return ConditionBirthdayMonth::make(value);
+        }
     }
     else if (type == "birthdayDay") {
-        return ConditionBirthdayDay::checkAndMake(value);
+        if (ConditionBirthdayDay::isValid(value)) {
+            return ConditionBirthdayDay::make(value);
+        }
     }
     else if (type == "certi") {
-        return ConditionCerti::checkAndMake(value);
+        if (ConditionCerti::isValid(value)) {
+            return ConditionCerti::make(value);
+        }
     }
 
     return nullptr;
