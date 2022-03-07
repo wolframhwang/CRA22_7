@@ -11,18 +11,18 @@ class OutputManager {
 public:
     OutputManager(const string& outputFileName)
         : outputFileName_(outputFileName) {
+        outputFileStream_(outputFileName_);
     }
 
     void printResult(ResultCount result) {
-        ofstream outputFile(outputFileName_);
         outputFile << result.toString() << endl;
     }
 
     void printResult(ResultTop result) {
-        ofstream outputFile(outputFileName_);
         outputFile << result.toString() << endl;
     }
     
 private:
+    ofstream outputFileStream_;
     string outputFileName_;
 };
