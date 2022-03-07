@@ -42,4 +42,9 @@ struct Employee {
     bool operator<(const Employee& other) const {
         return employeeNum < other.employeeNum;
     }
+
+    string toString(void) const {
+        // TODO: 구현 필요
+        return "";
+    }
 };
