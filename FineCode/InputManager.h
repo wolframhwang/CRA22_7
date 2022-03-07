@@ -60,13 +60,9 @@ public:
         parsedCmd_ = values;
     }
 
-    void getCmd() {
-        // TODO: Need to avoid creating virtual class
-        //shared_ptr<ICmd> c = make_shared<ICmd>();
+    vector<string> getParsed() {
         cmdParser(inputFileName_);
-        //c->setParsedCmd(parsedCmd_);
-
-        return;
+        return parsedCmd_;
     }
 
     bool isAddCmd() {
