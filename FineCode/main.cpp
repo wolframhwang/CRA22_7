@@ -13,15 +13,20 @@ using namespace std;
 int main(void)
 {
     // TODO: need to implement these in 'employeeManager'
-    InputManager* im = new InputManager("input.txt");
+    InputManager* im = new InputManager("../input.txt");
+    OutputManager* om = new OutputManager("../output.txt");
+
     while (im->isEndOfFile() == false) {
-        //ICmd c = im->getCmd(); // TODO: Can't return (pure) virtual function, need to fix
-        im->getCmd();
-        if (im->isAddCmd()) {
-            Employee e = im->setEmployee();
-        }
-        OutputManager* om = new OutputManager();
-        //om->printResult(c); // TODO: Can't input (pure) virtual function, need to fix
+        vector<string> parsedCmd = im->getParsed();
+        string queryType = parsedCmd.at(0);
+        shared_ptr<ICmd> cmd = ICmd::getCmd(parsedCmd.at(0));
+        cmd->setParsedCmd(parsedCmd);
+
+        // Set Employee, if query is ADD
+        if (im->isAddCmd()) Employee employee = im->setEmployee();
+
+        // TODO: Run database, get result
+        om->printResult(/* Result */);
     }
 
     return 0;

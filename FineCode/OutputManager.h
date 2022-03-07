@@ -3,19 +3,24 @@
 #include <string>
 
 #include "Employee.h"
+#include "Result.h"
 
 using namespace std;
 
 class OutputManager {
 public:
-    void printResult(ICmd cmd) {
-        // TODO: get the Command 
-        ofstream outputFile("output_test.txt");
+    OutputManager(const string& outputFileName)
+        : outputFileName_(outputFileName) {
+    }
 
-        // case 1
-        outputFile << "SCH, 1" << endl;
-        // case 2
-        outputFile << "MOD, 17112609, FB NTAWR, CL4, 010 - 5645 - 6122, 20050520, PRO" << endl;
+    void printResult(ResultCount result) {
+        ofstream outputFile(outputFileName_);
+        outputFile << result.toString() << endl;
+    }
+
+    void printResult(ResultTop result) {
+        ofstream outputFile(outputFileName_);
+        outputFile << result.toString() << endl;
     }
     
 private:
