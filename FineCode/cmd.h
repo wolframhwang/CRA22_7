@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+
 #include "IDataBase.h"
 #include "Employee.h"
 #include "Condition.h"
@@ -14,6 +16,7 @@ public:
     }
 
     virtual bool execute(const shared_ptr<IDataBase> database) = 0;
+    virtual string getResult() = 0;
 
 protected:
     Result *result_;
@@ -26,9 +29,18 @@ public:
     }
 
     virtual bool execute(const shared_ptr<IDataBase> database) override {
-        database->add(*employee_, *result_);
-    }
+        try {
+            database->add(*employee_, *result_);
+        }
+        catch (...) {
+            throw std::runtime_error("DB error : add");
+        }
 
+        return true;
+    }
+    virtual string getResult() override  {
+        return result_->toString();
+    }
 private:
     Employee *employee_;
 };
@@ -38,7 +50,9 @@ public:
     ICmdTarget(ConditionPtr targetCondition, Result *result) :
         ICmd(result), targetCondition_(targetCondition) {
     }
-
+    virtual string getResult() override {
+        return result_->toString();
+    }
 protected:
     ConditionPtr targetCondition_;
 };
@@ -50,7 +64,13 @@ public:
     }
 
     virtual bool execute(const shared_ptr<IDataBase> database) override {
-        database->search(*targetCondition_, *result_);
+        try {
+            database->search(*targetCondition_, *result_);
+        }
+        catch (...) {
+            throw std::runtime_error("DB error : search");
+        }
+        return true;
     }
 };
 
@@ -61,7 +81,13 @@ public:
     }
 
     virtual bool execute(const shared_ptr<IDataBase> database) override {
-        database->modify(*targetCondition_, *modifyCondition_, *result_);
+        try {
+            database->modify(*targetCondition_, *modifyCondition_, *result_);
+        }
+        catch (...) {
+            throw std::runtime_error("DB error : modify");
+        }
+        return true;
     }
 
 private:
@@ -75,6 +101,12 @@ public:
     }
 
     virtual bool execute(const shared_ptr<IDataBase> database) override {
-        database->erase(*targetCondition_, *result_);
+        try {
+            database->erase(*targetCondition_, *result_);
+        }
+        catch (...) {
+            throw std::runtime_error("DB error : erase");
+        }
+        return true;
     }
 };

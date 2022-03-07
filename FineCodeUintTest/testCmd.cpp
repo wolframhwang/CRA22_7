@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
+#include "../FineCode/Condition.cpp"
 #include "../FineCode/cmd.cpp"
-#include "../FineCode/cmd.h"
 #include "../FineCode/IDataBase.h"
 #include "../FineCode/Result.h"
 
@@ -9,88 +9,152 @@ namespace {
     protected:
         void SetUp() override {
             db = make_shared<DataBase>();
-        }
-        // helper
-        bool isSame(Result a, Result b) {
-            //return a == b;
-            return false;
+            vector<string> cmd = { "ADD","","","", "18050301", "KYUMOK KIM", "CL2", "010-9777-6055", "19980906", "PRO" };
+            shared_ptr<ICmd> add = ICmd::getCmd(cmd);
+            add->execute(db);
         }
         // common data
         shared_ptr<IDataBase> db;
-        Result result;
     };
-
 
     // ADD
     TEST_F(CmdTest, CmdAddSuccess) {
-        shared_ptr<ICmd> add = ICmd::getCmd("ADD");
-        Employee employee = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-
+        vector<string> cmd = { "ADD","","","", "18050302", "KYUMOK KIM", "CL2", "010-9777-6055", "19980906", "PRO" };
+        shared_ptr<ICmd> add = ICmd::getCmd(cmd);
+        string res = add->getResult();
         EXPECT_TRUE(add->execute(db));
     }
-
     TEST_F(CmdTest, CmdAddFail) {
-        shared_ptr<ICmd> icmd = ICmd::getCmd("ADD");
-        Employee employee = { 99, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        icmd->setEmployee(make_shared<Employee>(employee));
-        EXPECT_TRUE(!icmd->execute(db));
+        // duplicate
+        vector<string> cmd = { "ADD","","","", "18050301", "KYUMOK KIM", "CL2", "010-9777-6055", "19980906", "PRO" };
+
+        shared_ptr<ICmd> add = ICmd::getCmd(cmd);
+        EXPECT_TRUE(!add->execute(db));
+    }
+    TEST_F(CmdTest, getCmdAssert) {
+        // Too long phon number
+        vector<string> cmd = { "ADD","","","", "18050301", "KYUMOK KIM", "CL2", "010-9777-60556", "19980906", "PRO" };
+        ASSERT_ANY_THROW(ICmd::getCmd(cmd));
     }
 
     // Modify
     TEST_F(CmdTest, CmdModifySuccess) {
-        shared_ptr<ICmd> add = ICmd::getCmd("ADD");
-        Employee employee = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        EXPECT_TRUE(add->execute(db));
-        shared_ptr<ICmd> mod = ICmd::getCmd("MOD");
-        Employee employee1 = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL2, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        // TODO : Get right Condition instance
-        shared_ptr<Condition> cond;
-        mod->setCondition(cond);
+        vector<string> cmd = { "MOD","","","", "name", "KYUMOK KIM", "name", "KYUMOK LEE"};
+        shared_ptr<ICmd> mod = ICmd::getCmd(cmd);
         EXPECT_TRUE(mod->execute(db));
+        string res = mod->getResult();
+        string expected = "MOD,1";
+        EXPECT_TRUE(res == expected);
+
+        vector<string> cmd2 = { "MOD","-p","","", "name", "KYUMOK LEE", "name", "KYUMOK KOO" };
+        shared_ptr<ICmd> mod2 = ICmd::getCmd(cmd2);
+        EXPECT_TRUE(mod2->execute(db));
+        string res2 = mod2->getResult();
+        string expected2 = "MOD,18050301,KYUMOK KIM,CL2,010-9777-6055,19980906,PRO";
+        EXPECT_TRUE(res == expected2);
+
+        vector<string> cmd3 = { "MOD","-p","-f","", "name", "KYUMOK", "phoneNum", "010-9777-6057" };
+        shared_ptr<ICmd> mod3 = ICmd::getCmd(cmd3);
+        EXPECT_TRUE(mod3->execute(db));
+        string res3 = mod3->getResult();
+        string expected3 = "MOD,18050301,KYUMOK KIM,CL2,010-9777-6057,19980906,PRO";
+        EXPECT_TRUE(res3 == expected3);
+    }
+    TEST_F(CmdTest, CmdModifyNameSuccess) {
+        vector<string> cmd = { "MOD","","-f","", "name", "KYUMOK", "phoneNum", "010-9777-6057" };
+        shared_ptr<ICmd> mod = ICmd::getCmd(cmd);
+        EXPECT_TRUE(mod->execute(db));
+        string res = mod->getResult();
+        string expected = "MOD,18050301,KYUMOK KIM,CL2,010-9777-6057,19980906,PRO";
+        EXPECT_TRUE(res == expected);
+
+        vector<string> cmd3 = { "MOD","","-l","", "name", "KIM", "phoneNum", "010-9777-6057" };
+        shared_ptr<ICmd> mod3 = ICmd::getCmd(cmd3);
+        EXPECT_TRUE(mod3->execute(db));
+        string res3 = mod3->getResult();
+        string expected3 = "MOD,18050301,KYUMOK KIM,CL2,010-9777-6057,19980906,PRO";
+        EXPECT_TRUE(res3 == expected3);
+    }
+    TEST_F(CmdTest, CmdModifyCLSuccess) {
+        vector<string> cmd3 = { "MOD","-p","","", "cl", "CL2", "phoneNum", "010-9777-6057" };
+        shared_ptr<ICmd> mod3 = ICmd::getCmd(cmd3);
+        EXPECT_TRUE(mod3->execute(db));
+        string res3 = mod3->getResult();
+        string expected3 = "MOD,18050301,KYUMOK KIM,CL2,010-9777-6057,19980906,PRO";
+        EXPECT_TRUE(res3 == expected3);
+    }
+    TEST_F(CmdTest, CmdModifyPhoneSuccess) {
+        vector<string> cmd = { "MOD","-p","","", "phoneNum", "010-9777-6055", "certi", "ADV" };
+        shared_ptr<ICmd> mod = ICmd::getCmd(cmd);
+        EXPECT_TRUE(mod->execute(db));
+        string res = mod->getResult();
+        string expected = "MOD,18050301,KYUMOK KIM,CL2,010-9777-6055,19980906,ADV";
+        EXPECT_TRUE(res == expected);
+
+        vector<string> cmd2 = { "MOD","-p","-m","", "phoneNum", "9777", "certi", "ADV" };
+        shared_ptr<ICmd> mod2 = ICmd::getCmd(cmd2);
+        EXPECT_TRUE(mod2->execute(db));
+        string res2 = mod2->getResult();
+        string expected2 = "MOD,18050301,KYUMOK KIM,CL2,010-9777-6055,19980906,ADV";
+        EXPECT_TRUE(res2 == expected2);
+
+        vector<string> cmd3 = { "MOD","-p","-l","", "phoneNum", "6055", "certi", "ADV" };
+        shared_ptr<ICmd> mod3 = ICmd::getCmd(cmd3);
+        EXPECT_TRUE(mod3->execute(db));
+        string res3 = mod3->getResult();
+        string expected3 = "MOD,18050301,KYUMOK KIM,CL2,010-9777-6055,19980906,ADV";
+        EXPECT_TRUE(res3 == expected3);
     }
     TEST_F(CmdTest, CmdModifyFail) {
-        shared_ptr<ICmd> mod = ICmd::getCmd("MOD");
-        Employee employee = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        shared_ptr<Condition> cond;
-        mod->setCondition(cond);
-        EXPECT_TRUE(!mod->execute(db));
+        // Not found
+        vector<string> cmd = { "MOD","","","", "name", "KYUMOK YA", "name", "KYUMOK LEE" };
+        shared_ptr<ICmd> mod = ICmd::getCmd(cmd);
+        EXPECT_TRUE(mod->execute(db));
+        string res = mod->getResult();
+        string expected = "MOD,NONE";
+        EXPECT_TRUE(res == expected);
     }
 
     // Search
     TEST_F(CmdTest, CmdSearchSuccess) {
-        shared_ptr<ICmd> add = ICmd::getCmd("ADD");
-        Employee employee = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        EXPECT_TRUE(add->execute(db));
-        shared_ptr<ICmd> sch = ICmd::getCmd("SCH");
-        Employee employee1 = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        shared_ptr<Condition> cond;
-        sch->setCondition(cond);
+        vector<string> cmd = { "SCH","","","", "name", "KYUMOK KIM" };
+        shared_ptr<ICmd> sch = ICmd::getCmd(cmd);
         EXPECT_TRUE(sch->execute(db));
+        string res = sch->getResult();
+        string expected = "SCH,1";
+        EXPECT_TRUE(res == expected);
+
+        vector<string> cmd2 = { "SCH","-p","","", "name", "KYUMOK KIM" };
+        shared_ptr<ICmd> sch2 = ICmd::getCmd(cmd2);
+        EXPECT_TRUE(sch2->execute(db));
+        string res2 = sch2->getResult();
+        string expected2 = "SCH,1";
+        EXPECT_TRUE(res2 == expected2);
     }
     TEST_F(CmdTest, CmdSearchFail) {
-        shared_ptr<ICmd> sch = ICmd::getCmd("SCH");
-        Employee employee = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        shared_ptr<Condition> cond;
-        sch->setCondition(cond);
-        EXPECT_TRUE(!sch->execute(db));
+        vector<string> cmd = { "SCH","","","", "name", "UU K" };
+        shared_ptr<ICmd> sch = ICmd::getCmd(cmd);
+        EXPECT_TRUE(sch->execute(db));
+        string res = sch->getResult();
+        string expected = "SCH,NONE";
+        EXPECT_TRUE(res == expected);
     }
 
     // Erase
     TEST_F(CmdTest, CmdEraseSuccess) {
-        shared_ptr<ICmd> add = ICmd::getCmd("ADD");
-        Employee employee = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        EXPECT_TRUE(add->execute(db));
-        shared_ptr<ICmd> del = ICmd::getCmd("DEL");
-        Employee employee1 = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        shared_ptr<Condition> cond;
-        del->setCondition(cond);
+        vector<string> cmd = { "DEL","","","", "name", "KYUMOK KIM" };
+        shared_ptr<ICmd> del = ICmd::getCmd(cmd);
         EXPECT_TRUE(del->execute(db));
+        string res = del->getResult();
+        string expected = "DEL,1";
+        EXPECT_TRUE(res == expected);
     }
     TEST_F(CmdTest, CmdEraseFail) {
-        shared_ptr<ICmd> del = ICmd::getCmd("DEL");
-        Employee employee = { 2015123099, { "VXIHXOTH", "JHOP" }, CL::CL3, { 3112,2609 }, { 1977,12,11 }, Grade::ADV };
-        shared_ptr<Condition> cond;
-        del->setCondition(cond);
-        EXPECT_TRUE(!del->execute(db));
+        vector<string> cmd = { "DEL","","","", "name", "KYUMOK LEE" };
+        shared_ptr<ICmd> del = ICmd::getCmd(cmd);
+        EXPECT_TRUE(del->execute(db));
+        string res = del->getResult();
+        string expected = "DEL,NONE";
+        EXPECT_TRUE(res == expected);
     }
 }
