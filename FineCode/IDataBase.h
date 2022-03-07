@@ -2,17 +2,16 @@
 #include <map>
 #include <vector>
 #include "Employee.h"
-#include "cmd.h"
 #include "Condition.h"
 
 using namespace std;
 
 struct IDataBase {
-    virtual bool add(EmployeeInfo employeeInfo) = 0;
+    virtual bool add(Employee employeeInfo) = 0;
     virtual bool modify(unsigned long employeeNumber, Condition &modifyCondtion) = 0;
     virtual bool erase(unsigned int employeeNumber) = 0;
     virtual vector<unsigned long> search(Condition &searchCondition) = 0;
-    virtual EmployeeInfo* getEmployeeInfo(unsigned int employeeNumber) = 0;
+    virtual Employee* getEmployee(unsigned int employeeNumber) = 0;
 };
 
 class DataBase: public IDataBase {
@@ -20,7 +19,7 @@ public:
     DataBase() { mutex = false; }
     virtual ~DataBase() {}
 
-    virtual bool add(EmployeeInfo employee) override {
+    virtual bool add(Employee employee) override {
         int employeeNum = employee.employeeNum;
         return employeesList.insert(make_pair(employeeNum, employee)).second;
     }    
@@ -52,12 +51,12 @@ public:
         return ret;
     }
 
-    virtual EmployeeInfo* getEmployeeInfo(unsigned int employeeNumber) override {
+    virtual Employee* getEmployee(unsigned int employeeNumber) override {
         if (employeesList.find(employeeNumber) == employeesList.end()) return NULL;
         return &employeesList[employeeNumber];
     }
     
 private:
-    map<unsigned long, EmployeeInfo> employeesList;
+    map<unsigned long, Employee> employeesList;
     bool mutex;
 };

@@ -1,7 +1,5 @@
-#include "pch.h"
 #include "gtest/gtest.h"
 #include "../FineCode/IDataBase.h"
-#include "../FineCode/Condition.cpp"
 
 TEST(IDataBaseTC, IDBAdd) {
     IDataBase* db = new DataBase();
@@ -19,25 +17,25 @@ TEST(IDataBaseTC, IDBAdd) {
     db->add({ 1902117175, {"SNOW","BOARD"},CL::CL4,{2814,1699},{1995,07,04},Grade::ADV });
     db->add({ 1903113260, {"SKATE","BOARD"},CL::CL2,{5798,5383},{1979,10,18},Grade::PRO });
 
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->name.first, "Wolfram");
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->name.last, "Hwang");
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->cl, CL::CL2);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->phoneNum.mid, 5678);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->phoneNum.end, 4321);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.year, 2000);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.month, 2);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.day, 14);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->certi, Grade::PRO);
+    EXPECT_EQ(db->getEmployee(20045583)->name.first, "Wolfram");
+    EXPECT_EQ(db->getEmployee(20045583)->name.last, "Hwang");
+    EXPECT_EQ(db->getEmployee(20045583)->cl, CL::CL2);
+    EXPECT_EQ(db->getEmployee(20045583)->phoneNum.mid, 5678);
+    EXPECT_EQ(db->getEmployee(20045583)->phoneNum.end, 4321);
+    EXPECT_EQ(db->getEmployee(20045583)->birthday.year, 2000);
+    EXPECT_EQ(db->getEmployee(20045583)->birthday.month, 2);
+    EXPECT_EQ(db->getEmployee(20045583)->birthday.day, 14);
+    EXPECT_EQ(db->getEmployee(20045583)->certi, Grade::PRO);
 
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->name.first, "ABC");
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->name.last, "DEF");
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->cl, CL::CL2);
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->phoneNum.mid, 1234);
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->phoneNum.end, 5678);
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->birthday.year, 2120);
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->birthday.month, 2);
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->birthday.day, 14);
-    EXPECT_EQ(db->getEmployeeInfo(12345678)->certi, Grade::EX);
+    EXPECT_EQ(db->getEmployee(12345678)->name.first, "ABC");
+    EXPECT_EQ(db->getEmployee(12345678)->name.last, "DEF");
+    EXPECT_EQ(db->getEmployee(12345678)->cl, CL::CL2);
+    EXPECT_EQ(db->getEmployee(12345678)->phoneNum.mid, 1234);
+    EXPECT_EQ(db->getEmployee(12345678)->phoneNum.end, 5678);
+    EXPECT_EQ(db->getEmployee(12345678)->birthday.year, 2120);
+    EXPECT_EQ(db->getEmployee(12345678)->birthday.month, 2);
+    EXPECT_EQ(db->getEmployee(12345678)->birthday.day, 14);
+    EXPECT_EQ(db->getEmployee(12345678)->certi, Grade::EX);
 }
 
 
@@ -60,7 +58,7 @@ TEST(IDataBase, IDBSearch) {
     db->add({ 1902117175, {"SNOW","BOARD"},CL::CL4,{2814,1699},{1995,07,04},Grade::ADV });
     db->add({ 1903113260, {"SKATE","BOARD"},CL::CL2,{5798,5383},{1979,10,18},Grade::PRO });
 
-    Condition* cond = new ConditionNameFirst("Wolfram");
+    ConditionPtr cond = Condition::make("nameFirst", "Wolfram");
     vector<unsigned long> ret = db->search(*cond);
     EXPECT_EQ(20045583, ret[0]);
     EXPECT_EQ(20045584, ret[1]);
@@ -84,12 +82,12 @@ TEST(IDataBaseTC, IDBMod) {
     db->add({ 1902117175, {"SNOW","BOARD"},CL::CL4,{2814,1699},{1995,07,04},Grade::ADV });
     db->add({ 1903113260, {"SKATE","BOARD"},CL::CL2,{5798,5383},{1979,10,18},Grade::PRO });
 
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.year, 2000);
-    Condition* findCond = new ConditionNameFirst("Wolfram");
-    Condition* modifyCond = new ConditionBirthdayYear(2012);
+    EXPECT_EQ(db->getEmployee(20045583)->birthday.year, 2000);
+    ConditionPtr findCond = Condition::make("nameFirst", "Wolfram");
+    ConditionPtr modifyCond = Condition::make("birthdayYear", "2012");
     vector<unsigned long> ret = db->search(*findCond);
     db->modify(ret[0], *modifyCond);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.year, 2012);
+    EXPECT_EQ(db->getEmployee(20045583)->birthday.year, 2012);
 }
 
 
@@ -109,20 +107,20 @@ TEST(IDataBaseTC, IDBErase) {
     db->add({ 1902117175, {"SNOW","BOARD"},CL::CL4,{2814,1699},{1995,07,04},Grade::ADV });
     db->add({ 1903113260, {"SKATE","BOARD"},CL::CL2,{5798,5383},{1979,10,18},Grade::PRO });
 
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->name.first, "Wolfram");
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->name.last, "Hwang");
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->cl, CL::CL2);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->phoneNum.mid, 5678);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->phoneNum.end, 4321);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.year, 2000);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.month, 2);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->birthday.day, 14);
-    EXPECT_EQ(db->getEmployeeInfo(20045583)->certi, Grade::PRO);
+    EXPECT_EQ(db->getEmployee(20045583)->name.first, "Wolfram");
+    EXPECT_EQ(db->getEmployee(20045583)->name.last, "Hwang");
+    EXPECT_EQ(db->getEmployee(20045583)->cl, CL::CL2);
+    EXPECT_EQ(db->getEmployee(20045583)->phoneNum.mid, 5678);
+    EXPECT_EQ(db->getEmployee(20045583)->phoneNum.end, 4321);
+    EXPECT_EQ(db->getEmployee(20045583)->birthday.year, 2000);
+    EXPECT_EQ(db->getEmployee(20045583)->birthday.month, 2);
+    EXPECT_EQ(db->getEmployee(20045583)->birthday.day, 14);
+    EXPECT_EQ(db->getEmployee(20045583)->certi, Grade::PRO);
 
-    Condition* findCond = new ConditionNameFirst("Wolfram");
+    ConditionPtr findCond = Condition::make("nameFirst", "Wolfram");
     vector<unsigned long> ret = db->search(*findCond);
     for (auto employeeNumber : ret) {
         db->erase(employeeNumber);
     }
-    EXPECT_FALSE(db->getEmployeeInfo(20045583));
+    EXPECT_FALSE(db->getEmployee(20045583));
 }

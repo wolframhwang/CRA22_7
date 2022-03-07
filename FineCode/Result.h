@@ -1,3 +1,4 @@
+#pragma once
 
 #include "Employee.h"
 #include <string>
@@ -12,7 +13,7 @@ class Result {
 public:    
     Result() { 
         entryCount = 0; 
-        employees = priority_queue<EmployeeInfo>(); 
+        employees = priority_queue<Employee>(); 
     }
     ~Result() {}
 
@@ -24,7 +25,7 @@ public:
         return entryCount;
     }
 
-    void employeeAddonResult(EmployeeInfo emp) {
+    void employeeAddonResult(Employee emp) {
         employees.push(emp);
     }
     
@@ -37,8 +38,12 @@ public:
         }
         return ret;
     }
-    
+
 private:
+    string toString(const Employee& employee) {
+        return "Not Implemented"s;
+    }
+
     int entryCount;
-    priority_queue<EmployeeInfo> employees;
+    priority_queue<Employee> employees;
 };

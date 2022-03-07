@@ -4,6 +4,7 @@
 #include "Employee.h"
 #include "Condition.h"
 #include "IDataBase.h"
+#include "Result.h"
 
 // TODO : remove this temporal code
 #ifdef DEBUG_RESULT
