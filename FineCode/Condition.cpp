@@ -110,7 +110,7 @@ void ConditionName::set(Employee &employee) const {
 }
 
 bool ConditionCl::isEqual(const Employee &employee) const {
-    return employee.cl == cl_;
+    return employee.cl.cl_ == cl_;
 }
 
 void ConditionCl::set(Employee &employee) const {

@@ -10,12 +10,14 @@ enum class CL {
     CL2,
     CL3,
     CL4,
+    INVALID
 };
 
 enum class Grade {
     ADV,
     PRO,
     EX,
+    INVALID
 };
 
 struct PhoneNum {
@@ -267,6 +269,42 @@ public:
 
     ConditionCl(const CL &cl) :
         cl_(cl) {
+    }
+
+    ConditionCl(const string& cl) : cl_(CL::INVALID) {
+        switch (cl[2]) {
+        case '1':
+            cl_ = CL::CL1;
+            break;
+        case '2':
+            cl_ = CL::CL2;
+            break;
+        case '3':
+            cl_ = CL::CL3;
+            break;
+        case '4':
+            cl_ = CL::CL4;
+            break;
+        }
+    }
+
+    operator string() const {
+        switch (cl_) {
+        case CL::CL1:
+            return "CL1";
+        case CL::CL2:
+            return "CL2";
+        case CL::CL3:
+            return "CL3";
+        case CL::CL4:
+            return "CL4";
+        default:
+            return "INVALID";
+        }
+    }
+
+    operator CL() const {
+        return cl_;
     }
 
     virtual bool isEqual(const Employee &employee) const override;

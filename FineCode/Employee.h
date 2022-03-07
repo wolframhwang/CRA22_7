@@ -7,7 +7,7 @@ using namespace std;
 struct Employee {
     ConditionEmployeeNum employeeNum;
     ConditionName name;
-    CL cl;
+    ConditionCl cl;
     PhoneNum phoneNum;
     Date birthday;
     Grade certi;
@@ -18,24 +18,7 @@ struct Employee {
         phoneNum(_phoneNum), birthday(_birthday), certi(_certi) {
     }
 
-    Employee(const vector<string>& params) : employeeNum(params[0]), name(params[1]) {
-        auto paramCl = params[2];
-        cl = CL::CL1;
-        switch (paramCl[2]) {
-        case '1':
-            cl = CL::CL1;
-            break;
-        case '2':
-            cl = CL::CL2;
-            break;
-        case '3':
-            cl = CL::CL3;
-            break;
-        case '4':
-            cl = CL::CL4;
-            break;
-        }
-
+    Employee(const vector<string>& params) : employeeNum(params[0]), name(params[1]), cl(params[2]) {
         auto paramPhoneNum = params[3];
         phoneNum.mid = stoi(string(paramPhoneNum.c_str() + 4, 4));
         phoneNum.end = stoi(string(paramPhoneNum.c_str() + 9, 4));
@@ -70,7 +53,7 @@ struct Employee {
         string result;
         result += string(employeeNum) + ",";
         result += string(name) + ",";
-        result += toStringCl() + ",";
+        result += string(cl) + ",";
         result += "010-" + toStringNum(phoneNum.mid, 4) + "-" + toStringNum(phoneNum.end, 4) + ",";
         result += toStringNum(birthday.year, 4) + toStringNum(birthday.month, 2) + toStringNum(birthday.day, 2) + ",";
         result += toStringCerti();
@@ -78,19 +61,6 @@ struct Employee {
     }
 
 private:
-    string toStringCl(void) const {
-        switch (cl) {
-        case CL::CL1:
-            return "CL1";
-        case CL::CL2:
-            return "CL2";
-        case CL::CL3:
-            return "CL3";
-        case CL::CL4:
-            return "CL4";
-        }
-    }
-
     string toStringCerti(void) const {
         switch (certi) {
         case Grade::ADV:
