@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Employee.h"
 #include <string>
 #include <vector>
 #include <queue>
+
+#include "Employee.h"
 
 using namespace std;
 
@@ -11,39 +12,65 @@ const int maxEmployeePrintCount = 5;
 
 class Result {    
 public:    
-    Result() { 
-        entryCount = 0; 
-        employees = priority_queue<Employee>(); 
-    }
-    ~Result() {}
+    Result(const string& cmd) : cmd_(cmd + ",") {}
 
-    void setEntryCountPlus() {
-        entryCount += 1;
+    virtual void insert(const Employee& employee) = 0;
+    virtual string toString(void) = 0;
+
+protected:
+    string cmd_;
+};
+
+class ResultCount : public Result {    
+public:
+    ResultCount(string cmd) :
+        Result(cmd), entryCount_(0) {
     }
 
-    int getEntryCount() {
-        return entryCount;
+    virtual void insert(const Employee& employee) override {
+        entryCount_++;
     }
 
-    void employeeAddonResult(Employee emp) {
-        employees.push(emp);
-    }
-    
-    vector<string> employeesPrint() {
-        vector<string> ret;
-        for(int i = 0; i < maxEmployeePrintCount; i++) {
-            if(employees.empty()) return ret;
-            ret.push_back(toString(employees.top()));
-            employees.pop();
+    virtual string toString(void) override {
+        if (entryCount_ == 0) {
+            return cmd_ + "NONE";
         }
-        return ret;
+        return cmd_ + to_string(entryCount_);
     }
 
 private:
-    string toString(const Employee& employee) {
-        return "Not Implemented"s;
+    int entryCount_;
+};
+
+class ResultTop : public Result {    
+public:
+    ResultTop(string cmd, int printCount) : 
+        Result(cmd), printCount_(printCount) {
     }
 
-    int entryCount;
-    priority_queue<Employee> employees;
+    virtual void insert(const Employee& employee) override {
+        employees_.push(&employee);
+    }
+
+    virtual string toString(void) override {
+        if (employees_.size() == 0) {
+            return cmd_ + "NONE";
+        }
+
+        string result;
+        for (int index = 0; index < printCount_; index++) {
+            auto employee = employees_.top();
+            result += cmd_ + employee->toString() + "\n";
+
+            employees_.pop();
+            if (employees_.empty()) {
+                break;
+            }
+        }
+        return result;
+    }
+
+private:
+    int printCount_;
+    priority_queue<const Employee*> employees_;
 };
