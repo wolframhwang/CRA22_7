@@ -9,7 +9,7 @@ struct Employee {
     ConditionName name;
     ConditionCl cl;
     ConditionPhoneNum phoneNum;
-    Date birthday;
+    ConditionBirthday birthday;
     Grade certi;
 
     Employee(unsigned long _employeeNum, Name _name, CL _cl, 
@@ -18,12 +18,7 @@ struct Employee {
         phoneNum(_phoneNum), birthday(_birthday), certi(_certi) {
     }
 
-    Employee(const vector<string>& params) : employeeNum(params[0]), name(params[1]), cl(params[2]), phoneNum(params[3]) {
-        auto paramBirthday = params[4];
-        birthday.year  = stoi(string(paramBirthday.c_str(), 4));
-        birthday.month = stoi(string(paramBirthday.c_str() + 4, 2));
-        birthday.day   = stoi(string(paramBirthday.c_str() + 6, 2));
-
+    Employee(const vector<string>& params) : employeeNum(params[0]), name(params[1]), cl(params[2]), phoneNum(params[3]), birthday(params[4]) {
         auto paramCerti = params[5];
         certi = Grade::ADV;
         if (paramCerti == "ADV") {
@@ -51,7 +46,7 @@ struct Employee {
         result += string(name) + ",";
         result += string(cl) + ",";
         result += string(phoneNum) + ",";
-        result += toStringNum(birthday.year, 4) + toStringNum(birthday.month, 2) + toStringNum(birthday.day, 2) + ",";
+        result += string(birthday) + ",";
         result += toStringCerti();
         return result;
     }

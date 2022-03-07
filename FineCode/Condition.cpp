@@ -167,13 +167,13 @@ void ConditionBirthdayDay::set(Employee &employee) const {
 }
 
 bool ConditionBirthday::isEqual(const Employee &employee) const {
-    return conditionBirthdayYear.isEqual(employee) && conditionBirthdayMonth.isEqual(employee) && conditionBirthdayDay.isEqual(employee);
+    return year.isEqual(employee) && month.isEqual(employee) && day.isEqual(employee);
 }
 
 void ConditionBirthday::set(Employee &employee) const {
-    conditionBirthdayYear.set(employee);
-    conditionBirthdayMonth.set(employee);
-    conditionBirthdayDay.set(employee);
+    year.set(employee);
+    month.set(employee);
+    day.set(employee);
 }
 
 bool ConditionCerti::isEqual(const Employee &employee) const {

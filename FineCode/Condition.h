@@ -352,6 +352,14 @@ public:
         return mid_;
     }
 
+    operator string() const {
+        auto result = to_string(mid_);
+        while (result.length() < 4) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
     virtual bool isEqual(const Employee &employee) const override;
     virtual void set(Employee &employee) const override;
 
@@ -395,6 +403,14 @@ public:
 
     operator int() const {
         return end_;
+    }
+
+    operator string() const {
+        auto result = to_string(end_);
+        while (result.length() < 4) {
+            result = "0" + result;
+        }
+        return result;
     }
 
     virtual bool isEqual(const Employee &employee) const override;
@@ -481,6 +497,22 @@ public:
         year_(year) {
     }
 
+    ConditionBirthdayYear(const string &year) :
+        ConditionBirthdayYear(stoi(year)) {
+    }
+
+    operator int() const {
+        return year_;
+    }
+
+    operator string() const {
+        auto result = to_string(year_);
+        while (result.length() < 4) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
     virtual bool isEqual(const Employee &employee) const override;
     virtual void set(Employee &employee) const override;
 
@@ -517,6 +549,22 @@ public:
 
     ConditionBirthdayMonth(const int &month) :
         month_(month) {
+    }
+
+    ConditionBirthdayMonth(const string &month) :
+        ConditionBirthdayMonth(stoi(month)) {
+    }
+
+    operator int() const {
+        return month_;
+    }
+
+    operator string() const {
+        auto result = to_string(month_);
+        while (result.length() < 2) {
+            result = "0" + result;
+        }
+        return result;
     }
 
     virtual bool isEqual(const Employee &employee) const override;
@@ -557,6 +605,22 @@ public:
         day_(day) {
     }
 
+    ConditionBirthdayDay(const string &day) :
+        ConditionBirthdayDay(stoi(day)) {
+    }
+
+    operator int() const {
+        return day_;
+    }
+
+    operator string() const {
+        auto result = to_string(day_);
+        while (result.length() < 2) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
     virtual bool isEqual(const Employee &employee) const override;
     virtual void set(Employee &employee) const override;
 
@@ -567,10 +631,7 @@ private:
 class ConditionBirthday : public Condition {
 public:
     static ConditionPtr make(const string& birthday) {
-        auto year  = stoi(string(birthday.c_str(), 4));
-        auto month = stoi(string(birthday.c_str() + 4, 2));
-        auto day   = stoi(string(birthday.c_str() + 6, 2));
-        return make_shared<ConditionBirthday>(year, month, day);
+        return make_shared<ConditionBirthday>(birthday);
     }
 
     static bool isValid(const string& birthday) {
@@ -586,17 +647,31 @@ public:
         return ConditionBirthdayYear::isValid(year) && ConditionBirthdayMonth::isValid(month) && ConditionBirthdayDay::isValid(day);
     }
 
-    ConditionBirthday(const int &year, const int &month, const int &day) :
-        conditionBirthdayYear(year), conditionBirthdayMonth(month), conditionBirthdayDay(day) {
+    ConditionBirthday(const int &_year, const int &_month, const int &_day) :
+        year(_year), month(_month), day(_day) {
+    }
+
+    ConditionBirthday(Date birthday) :
+        ConditionBirthday(birthday.year, birthday.month, birthday.day) {
+    }
+
+    ConditionBirthday(const string& birthday) :
+        year(string(birthday.c_str(), 4)),
+        month(string(birthday.c_str() + 4, 2)),
+        day(string(birthday.c_str() + 6, 2)) {
     }
 
     virtual bool isEqual(const Employee &employee) const override;
     virtual void set(Employee &employee) const override;
 
-private:
-    ConditionBirthdayYear  conditionBirthdayYear;
-    ConditionBirthdayMonth conditionBirthdayMonth;
-    ConditionBirthdayDay   conditionBirthdayDay;
+    operator string() const {
+        return string(year) + string(month) + string(day);
+    }
+
+public:
+    ConditionBirthdayYear  year;
+    ConditionBirthdayMonth month;
+    ConditionBirthdayDay   day;
 };
 
 class ConditionCerti : public Condition {
