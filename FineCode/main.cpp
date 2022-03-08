@@ -25,6 +25,9 @@ int main(void)
         cmd->execute(database);
         om->printResult(cmd->result_);
     }
+    
+    delete im;
+    delete om;
 
     return 0;
 }
