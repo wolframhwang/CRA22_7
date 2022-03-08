@@ -1,5 +1,5 @@
 #pragma once
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include "Employee.h"
 #include "Condition.h"
@@ -60,5 +60,5 @@ public:
     }
     
 private:
-    map<unsigned long, Employee> employees_;
+    unordered_map<unsigned long, Employee> employees_;
 };
