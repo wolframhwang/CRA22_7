@@ -1,26 +1,58 @@
 #pragma once
 
-#include "Employee.h"
 #include <memory>
+#include <string>
+
+using namespace std;
+
+enum class CL {
+    CL1,
+    CL2,
+    CL3,
+    CL4,
+    INVALID
+};
+
+enum class Grade {
+    ADV,
+    PRO,
+    EX,
+    INVALID
+};
+
+struct PhoneNum {
+    int mid;
+    int end;
+};
+
+struct Name {
+    string first;
+    string last;
+};
+
+struct Date {
+    int year;
+    int month;
+    int day;
+};
 
 class Condition;
 using ConditionPtr = shared_ptr<Condition>;
+struct Employee;
 
 class Condition {
 public:
     static ConditionPtr make(const string &type, const string &value);
-
+    
     virtual bool isEqual(const Employee &employee) const = 0;
-    virtual void set(Employee& employee) const = 0;
+    virtual void set(Employee &employee) const = 0;
+    virtual operator string() const { return ""; };
 };
 
 class ConditionEmployeeNum : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& employeeNum) {
-        if (isValid(employeeNum)) {
-            return make_shared<ConditionEmployeeNum>(employeeNum);
-        }
-        return nullptr;
+    static ConditionPtr make(const string& employeeNum) {
+        return make_shared<ConditionEmployeeNum>(employeeNum);
     }
 
     static bool isValid(const string &employeeNum) {
@@ -44,6 +76,8 @@ public:
         return true;
     }
 
+    ConditionEmployeeNum() : employeeNum_(0) {}
+
     ConditionEmployeeNum(const unsigned long &employeeNum) :
         employeeNum_(employeeNum) {
     }
@@ -59,13 +93,13 @@ public:
         }
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.employeeNum == employeeNum_;
+    operator unsigned long() const {
+        return employeeNum_;
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.employeeNum = employeeNum_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
+    virtual operator string() const override;
 
 private:
     unsigned long employeeNum_;
@@ -73,11 +107,8 @@ private:
 
 class ConditionNameFirst : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& first) {
-        if (isValid(first)) {
-            return make_shared<ConditionNameFirst>(first);
-        }
-        return nullptr;
+    static ConditionPtr make(const string& first) {
+        return make_shared<ConditionNameFirst>(first);
     }
 
     static bool isValid(const string &first) {
@@ -94,17 +125,17 @@ public:
         return true;
     }
 
+    ConditionNameFirst() {}
     ConditionNameFirst(const string &first) :
         first_(first) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.name.first == first_;
+    operator string() const {
+        return first_;
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.name.first = first_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     string first_;
@@ -112,11 +143,8 @@ private:
 
 class ConditionNameLast : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& last) {
-        if (isValid(last)) {
-            return make_shared<ConditionNameLast>(last);
-        }
-        return nullptr;
+    static ConditionPtr make(const string& last) {
+        return make_shared<ConditionNameLast>(last);
     }
 
     static bool isValid(const string &last) {
@@ -133,17 +161,17 @@ public:
         return true;
     }
 
+    ConditionNameLast() {}
     ConditionNameLast(const string &last) :
         last_(last) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.name.last == last_;
+    operator string() const {
+        return last_;
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.name.last = last_;
-    }
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     string last_;
@@ -151,19 +179,8 @@ private:
 
 class ConditionName : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& name) {
-        if (isValid(name)) {
-            size_t pos = name.find(' ');
-
-            if (pos > 0 && pos < name.length() - 1) {
-                string first = { name.c_str(), pos};
-                string last  = { name.c_str() + pos + 1, name.length() - first.length() - 1};
-
-                return make_shared<ConditionName>(first, last);
-            }
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& name) {
+        return make_shared<ConditionName>(name);
     }
 
     static bool isValid(const string &name) {
@@ -183,49 +200,55 @@ public:
         return ConditionNameFirst::isValid(first) && ConditionNameLast::isValid(last);
     }
 
-    ConditionName(const string &first, const string &last) :
-        nameFirst(first), nameLast(last) {
+    ConditionName(const string &_first, const string &_last) :
+        first(_first), last(_last) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return nameFirst.isEqual(employee) && nameLast.isEqual(employee);
+    ConditionName(const Name &name) :
+        first(name.first), last(name.last) {
     }
 
-    virtual void set(Employee &employee) const override {
-        nameFirst.set(employee);
-        nameLast.set(employee);
+    ConditionName(const string &name) {
+        size_t pos = name.find(' ');
+        string _first = { name.c_str(), pos};
+        string _last  = { name.c_str() + pos + 1, name.length() - _first.length() - 1};
+
+        first = _first;
+        last  = _last;
     }
 
-private:
-    ConditionNameFirst nameFirst;
-    ConditionNameLast nameLast;
+    operator string() const {
+        return string(first) + " " + string(last);
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
+
+    ConditionNameFirst first;
+    ConditionNameLast last;
 };
 
 class ConditionCl : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& clString) {
-        if (isValid(clString)) {
-            CL cl;
+    static ConditionPtr make(const string& clString) {
+        CL cl;
 
-            switch (clString[2]) {
-            case '1':
-                cl = CL::CL1;
-                break;
-            case '2':
-                cl = CL::CL2;
-                break;
-            case '3':
-                cl = CL::CL3;
-                break;
-            case '4':
-                cl = CL::CL4;
-                break;
-            }
-
-            return make_shared<ConditionCl>(cl);
+        switch (clString[2]) {
+        case '1':
+            cl = CL::CL1;
+            break;
+        case '2':
+            cl = CL::CL2;
+            break;
+        case '3':
+            cl = CL::CL3;
+            break;
+        case '4':
+            cl = CL::CL4;
+            break;
         }
 
-        return nullptr;
+        return make_shared<ConditionCl>(cl);
     }
 
     static bool isValid(const string& cl) {
@@ -248,13 +271,44 @@ public:
         cl_(cl) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.cl == cl_;
+    ConditionCl(const string& cl) : cl_(CL::INVALID) {
+        switch (cl[2]) {
+        case '1':
+            cl_ = CL::CL1;
+            break;
+        case '2':
+            cl_ = CL::CL2;
+            break;
+        case '3':
+            cl_ = CL::CL3;
+            break;
+        case '4':
+            cl_ = CL::CL4;
+            break;
+        }
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.cl = cl_;
+    operator string() const {
+        switch (cl_) {
+        case CL::CL1:
+            return "CL1";
+        case CL::CL2:
+            return "CL2";
+        case CL::CL3:
+            return "CL3";
+        case CL::CL4:
+            return "CL4";
+        default:
+            return "INVALID";
+        }
     }
+
+    operator CL() const {
+        return cl_;
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     CL cl_;
@@ -262,12 +316,8 @@ private:
 
 class ConditionPhoneNumMid : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& mid) {
-        if (isValid(mid)) {
-            return make_shared<ConditionPhoneNumMid>(stoi(mid));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& mid) {
+        return make_shared<ConditionPhoneNumMid>(stoi(mid));
     }
 
     static bool isValid(const string& mid) {
@@ -286,17 +336,32 @@ public:
         return true;
     }
 
+    ConditionPhoneNumMid() :
+        ConditionPhoneNumMid(0) {
+    }
+
     ConditionPhoneNumMid(int mid) :
         mid_(mid) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.phoneNum.mid == mid_;
+    ConditionPhoneNumMid(const string& mid) :
+        mid_(stoi(mid)) {
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.phoneNum.mid = mid_;
+    operator int() const {
+        return mid_;
     }
+
+    operator string() const {
+        auto result = to_string(mid_);
+        while (result.length() < 4) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int mid_;
@@ -304,12 +369,8 @@ private:
 
 class ConditionPhoneNumEnd : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& end) {
-        if (isValid(end)) {
-            return make_shared<ConditionPhoneNumEnd>(stoi(end));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& end) {
+        return make_shared<ConditionPhoneNumEnd>(stoi(end));
     }
 
     static bool isValid(const string& end) {
@@ -328,17 +389,32 @@ public:
         return true;
     }
 
+    ConditionPhoneNumEnd() :
+        ConditionPhoneNumEnd(0) {
+    }
+
     ConditionPhoneNumEnd(int end) :
         end_(end) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.phoneNum.end == end_;
+    ConditionPhoneNumEnd(const string& end) :
+        end_(stoi(end)) {
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.phoneNum.end = end_;
+    operator int() const {
+        return end_;
     }
+
+    operator string() const {
+        auto result = to_string(end_);
+        while (result.length() < 4) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int end_;
@@ -346,14 +422,8 @@ private:
 
 class ConditionPhoneNum : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& phoneNum) {
-        if (isValid(phoneNum)) {
-            auto mid = stoi(string(phoneNum.c_str() + 4, 4));
-            auto end = stoi(string(phoneNum.c_str() + 9, 4));
-            return make_shared<ConditionPhoneNum>(mid, end);
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& phoneNum) {
+        return make_shared<ConditionPhoneNum>(phoneNum);
     }
 
     static bool isValid(const string& phoneNum) {
@@ -376,32 +446,35 @@ public:
         return ConditionPhoneNumMid::isValid(phoneNumMid) && ConditionPhoneNumEnd::isValid(phoneNumEnd);
     }
 
-    ConditionPhoneNum(int mid, int end) :
-        phoneNumMid_(mid), phoneNumEnd_(end) {
+    ConditionPhoneNum(int _mid, int _end) :
+        mid(_mid), end(_end) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return phoneNumMid_.isEqual(employee) && phoneNumEnd_.isEqual(employee);
+    ConditionPhoneNum(const PhoneNum& phoneNum) :
+        mid(phoneNum.mid), end(phoneNum.end) {
     }
 
-    virtual void set(Employee &employee) const override {
-        phoneNumMid_.set(employee);
-        phoneNumEnd_.set(employee);
+    ConditionPhoneNum(const string& phoneNum) {
+        mid = string(phoneNum.c_str() + 4, 4);
+        end = string(phoneNum.c_str() + 9, 4);
     }
 
-private:
-    ConditionPhoneNumMid phoneNumMid_;
-    ConditionPhoneNumEnd phoneNumEnd_;
+    operator string() const {
+        return "010-" + string(mid) + "-" + string(end);
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
+
+public:
+    ConditionPhoneNumMid mid;
+    ConditionPhoneNumEnd end;
 };
 
 class ConditionBirthdayYear : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& year) {
-        if (isValid(year)) {
-            return make_shared<ConditionBirthdayYear>(stoi(year));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& year) {
+        return make_shared<ConditionBirthdayYear>(stoi(year));
     }
 
     static bool isValid(const string& year) {
@@ -424,13 +497,24 @@ public:
         year_(year) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.birthday.year == year_;
+    ConditionBirthdayYear(const string &year) :
+        ConditionBirthdayYear(stoi(year)) {
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.birthday.year = year_;
+    operator int() const {
+        return year_;
     }
+
+    operator string() const {
+        auto result = to_string(year_);
+        while (result.length() < 4) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int year_;
@@ -438,12 +522,8 @@ private:
 
 class ConditionBirthdayMonth : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& month) {
-        if (isValid(month)) {
-            return make_shared<ConditionBirthdayMonth>(stoi(month));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& month) {
+        return make_shared<ConditionBirthdayMonth>(stoi(month));
     }
 
     static bool isValid(const string& month) {
@@ -471,13 +551,24 @@ public:
         month_(month) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.birthday.month == month_;
+    ConditionBirthdayMonth(const string &month) :
+        ConditionBirthdayMonth(stoi(month)) {
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.birthday.month = month_;
+    operator int() const {
+        return month_;
     }
+
+    operator string() const {
+        auto result = to_string(month_);
+        while (result.length() < 2) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int month_;
@@ -485,12 +576,8 @@ private:
 
 class ConditionBirthdayDay : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& day) {
-        if (isValid(day)) {
-            return make_shared<ConditionBirthdayDay>(stoi(day));
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& day) {
+        return make_shared<ConditionBirthdayDay>(stoi(day));
     }
 
     static bool isValid(const string& day) {
@@ -518,13 +605,24 @@ public:
         day_(day) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.birthday.day == day_;
+    ConditionBirthdayDay(const string &day) :
+        ConditionBirthdayDay(stoi(day)) {
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.birthday.day = day_;
+    operator int() const {
+        return day_;
     }
+
+    operator string() const {
+        auto result = to_string(day_);
+        while (result.length() < 2) {
+            result = "0" + result;
+        }
+        return result;
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     int day_;
@@ -532,15 +630,8 @@ private:
 
 class ConditionBirthday : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& birthday) {
-        if (isValid(birthday)) {
-            auto year  = stoi(string(birthday.c_str(), 4));
-            auto month = stoi(string(birthday.c_str() + 4, 2));
-            auto day   = stoi(string(birthday.c_str() + 6, 2));
-            return make_shared<ConditionBirthday>(year, month, day);
-        }
-
-        return nullptr;
+    static ConditionPtr make(const string& birthday) {
+        return make_shared<ConditionBirthday>(birthday);
     }
 
     static bool isValid(const string& birthday) {
@@ -556,62 +647,91 @@ public:
         return ConditionBirthdayYear::isValid(year) && ConditionBirthdayMonth::isValid(month) && ConditionBirthdayDay::isValid(day);
     }
 
-    ConditionBirthday(const int &year, const int &month, const int &day) :
-        conditionBirthdayYear(year), conditionBirthdayMonth(month), conditionBirthdayDay(day) {
+    ConditionBirthday(const int &_year, const int &_month, const int &_day) :
+        year(_year), month(_month), day(_day) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return conditionBirthdayYear.isEqual(employee) && conditionBirthdayMonth.isEqual(employee) && conditionBirthdayDay.isEqual(employee);
+    ConditionBirthday(Date birthday) :
+        ConditionBirthday(birthday.year, birthday.month, birthday.day) {
     }
 
-    virtual void set(Employee &employee) const override {
-        conditionBirthdayYear.set(employee);
-        conditionBirthdayMonth.set(employee);
-        conditionBirthdayDay.set(employee);
+    ConditionBirthday(const string& birthday) :
+        year(string(birthday.c_str(), 4)),
+        month(string(birthday.c_str() + 4, 2)),
+        day(string(birthday.c_str() + 6, 2)) {
     }
 
-private:
-    ConditionBirthdayYear  conditionBirthdayYear;
-    ConditionBirthdayMonth conditionBirthdayMonth;
-    ConditionBirthdayDay   conditionBirthdayDay;
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
+
+    operator string() const {
+        return string(year) + string(month) + string(day);
+    }
+
+public:
+    ConditionBirthdayYear  year;
+    ConditionBirthdayMonth month;
+    ConditionBirthdayDay   day;
 };
 
 class ConditionCerti : public Condition {
 public:
-    static ConditionPtr checkAndMake(const string& certiString) {
-        if (isValid(certiString)) {
-            Grade certi;
-            if (certiString == "ADV") {
-                certi = Grade::ADV;
-            }
-            else if (certiString == "PRO") {
-                certi = Grade::PRO;
-            }
-            else if (certiString == "EX") {
-                certi = Grade::EX;
-            }
-
-            return make_shared<ConditionCerti>(certi);
+    static ConditionPtr make(const string& certiString) {
+        Grade certi;
+        if (certiString == "ADV") {
+            certi = Grade::ADV;
+        }
+        else if (certiString == "PRO") {
+            certi = Grade::PRO;
+        }
+        else if (certiString == "EX") {
+            certi = Grade::EX;
         }
 
-        return nullptr;
+        return make_shared<ConditionCerti>(certi);
     }
 
     static bool isValid(const string& certi) {
         return certi == "ADV" || certi == "PRO" || certi == "EX";
     }
 
-    ConditionCerti(const Grade &certi) :
+    ConditionCerti(const Grade& certi) :
         certi_(certi) {
     }
 
-    virtual bool isEqual(const Employee &employee) const override {
-        return employee.certi == certi_;
+    ConditionCerti(const string& certi) {
+        if (certi == "ADV") {
+            certi_ = Grade::ADV;
+        }
+        else if (certi == "PRO") {
+            certi_ = Grade::PRO;
+        }
+        else if (certi == "EX") {
+            certi_ = Grade::EX;
+        }
+        else {
+            certi_ = Grade::INVALID;
+        }
     }
 
-    virtual void set(Employee &employee) const override {
-        employee.certi = certi_;
+    operator Grade() const {
+        return certi_;
     }
+
+    operator string() const {
+        switch (certi_) {
+        case Grade::ADV:
+            return "ADV";
+        case Grade::PRO:
+            return "PRO";
+        case Grade::EX:
+            return "EX";
+        }
+        return "INVALID";
+    }
+
+    virtual bool isEqual(const Employee &employee) const override;
+    virtual void set(Employee &employee) const override;
 
 private:
     Grade certi_;

@@ -11,7 +11,7 @@ shared_ptr<ICmd> ICmd::getCmd(const vector<string>& params) {
             ConditionBirthday::isValid(params[8]) &&
             ConditionCerti::isValid(params[9])) {
         
-            Employee *employee = new Employee(params);
+            Employee *employee = new Employee(vector<string>(params.begin() + 4, params.end()));
             Result *result = new ResultCount(type);
             return make_shared<CmdAdd>(CmdAdd{ employee, result });
         }

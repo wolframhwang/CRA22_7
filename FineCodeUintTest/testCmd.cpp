@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../FineCode/Condition.cpp"
+#include "../FineCode/Condition.h"
 #include "../FineCode/cmd.cpp"
 #include "../FineCode/IDataBase.h"
 #include "../FineCode/Result.h"
