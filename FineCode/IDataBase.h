@@ -38,13 +38,13 @@ public:
     }
 
     virtual void erase(const Condition &targetCondition, Result &result) override {
-        for (auto& employee : employees_) {
-            auto& key = employee.first;
-            auto& value = employee.second;
-
+        for (auto it = employees_.begin(); it != employees_.end(); it++) {
+            auto& key = it->first;
+            auto& value = it->second;
+ 
             if (targetCondition.isEqual(value)) {
                 result.insert(value);
-                employees_.erase(key);
+                it = employees_.erase(it);
             }
         }
     }
