@@ -1,8 +1,11 @@
 #include "cmd.h"
 
 shared_ptr<ICmd> ICmd::getCmd(const vector<string>& params) {
-    auto type = params[0];
+    if (params.size() < 4) {
+        return nullptr;
+    }
 
+    auto type = params[0];
     if (type == "ADD") {
         if (ConditionEmployeeNum::isValid(params[4]) &&
             ConditionName::isValid(params[5]) &&
