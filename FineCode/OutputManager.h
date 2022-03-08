@@ -10,16 +10,11 @@ using namespace std;
 class OutputManager {
 public:
     OutputManager(const string& outputFileName)
-        : outputFileName_(outputFileName) {
-        outputFileStream_(outputFileName_);
+        : outputFileName_(outputFileName), outputFileStream_(outputFileName) {
     }
 
-    void printResult(ResultCount result) {
-        outputFile << result.toString() << endl;
-    }
-
-    void printResult(ResultTop result) {
-        outputFile << result.toString() << endl;
+    void printResult(Result* result) {
+        outputFileStream_ << result->toString() << endl;
     }
     
 private:

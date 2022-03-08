@@ -69,17 +69,8 @@ public:
         return parsedCmd_.at(0) == "ADD";
     }
 
-    Employee setEmployee() {
-        shared_ptr<Employee> employee = make_shared<Employee>();
-
-        setEmployeeNum(employee);
-        setName(employee);
-        setCl(employee);
-        setPhoneNum(employee);
-        setBirthDay(employee);
-        setCerti(employee);
-
-        return *employee;
+    shared_ptr<Employee> setEmployee() {
+        return nullptr;
     }
 
 private:
