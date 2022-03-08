@@ -44,7 +44,6 @@ public:
         }
 
         getline(inputFileStream_, line);
-        cout << "cmdParser called!!!   " + line << endl;
 
         vector<string> values;
         string::size_type Fpos = line.find_first_not_of(',', 0);
@@ -83,7 +82,6 @@ private:
     vector<string> parsedCmd_;
 
     void setEmployeeNum(shared_ptr<Employee> employee) {
-        // REMIND: Need to append "19" or "20" for easy sorting.
         employee->employeeNum = stoi(parsedCmd_.at(INPUT_EMPLOYEENUM));
     }
 
