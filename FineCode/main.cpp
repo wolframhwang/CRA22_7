@@ -38,6 +38,9 @@ int main(int argc, char* argv[])
         cmd->execute(database);
         om->printResult(cmd->result_);
     }
+    
+    delete im;
+    delete om;
 
     return ERROR_TYPE_SUCCESS;
 }
