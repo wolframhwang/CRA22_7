@@ -39,7 +39,7 @@ shared_ptr<ICmd> ICmd::getCmd(const vector<string>& params) {
             if (params[2] == "-m") {
                 targetType += "Mid";
             }
-            else if (params[2] == "-e") {
+            else if (params[2] == "-l") {
                 targetType += "End";
             }
         }
