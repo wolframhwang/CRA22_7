@@ -38,14 +38,20 @@ public:
     }
 
     virtual void erase(const Condition &targetCondition, Result &result) override {
+        vector<unsigned long> keys;
+
         for (auto& employee : employees_) {
             auto& key = employee.first;
             auto& value = employee.second;
 
             if (targetCondition.isEqual(value)) {
                 result.insert(value);
-                employees_.erase(key);
+                keys.push_back(key);
             }
+        }
+
+        for (auto& key : keys) {
+            employees_.erase(key);
         }
     }
 

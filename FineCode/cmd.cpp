@@ -12,7 +12,7 @@ shared_ptr<ICmd> ICmd::getCmd(const vector<string>& params) {
             ConditionCerti::isValid(params[9])) {
         
             Employee *employee = new Employee(vector<string>(params.begin() + 4, params.end()));
-            Result *result = new ResultCount(type);
+            Result *result = new ResultNone(type);
             return make_shared<CmdAdd>(CmdAdd{ employee, result });
         }
         throw std::invalid_argument("getCmd() : ADD");

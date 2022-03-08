@@ -55,7 +55,7 @@ public:
             Fpos = line.find_first_not_of(',', Lpos);
             Lpos = line.find_first_of(',', Fpos);
         }
-        values.push_back(" "); // To avoid vector contains nothing
+        //values.push_back(" "); // To avoid vector contains nothing
 
         parsedCmd_ = values;
     }
