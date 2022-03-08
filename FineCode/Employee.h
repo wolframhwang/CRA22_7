@@ -23,7 +23,7 @@ struct Employee {
     }
 
     bool operator<(const Employee& other) const {
-        return employeeNum < other.employeeNum;
+        return employeeNum > other.employeeNum;
     }
 
     bool operator==(const Employee& other) const {
