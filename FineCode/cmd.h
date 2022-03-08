@@ -18,7 +18,6 @@ public:
     virtual bool execute(const shared_ptr<IDataBase> database) = 0;
     virtual string getResult() = 0;
 
-protected:
     Result *result_;
 };
 
