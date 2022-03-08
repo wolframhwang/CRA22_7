@@ -33,9 +33,9 @@ public:
 
     virtual string toString(void) override {
         if (entryCount_ == 0) {
-            return cmd_ + "NONE";
+            return cmd_ + "NONE\n";
         }
-        return cmd_ + to_string(entryCount_);
+        return cmd_ + to_string(entryCount_) + "\n";
     }
 
 private:
@@ -60,7 +60,7 @@ public:
 
     virtual string toString(void) override {
         if (employees_.size() == 0) {
-            return cmd_ + "NONE";
+            return cmd_ + "NONE\n";
         }
 
         string result;

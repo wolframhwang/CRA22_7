@@ -51,6 +51,7 @@ public:
         string::size_type Lpos = line.find_first_of(',', Fpos);
 
         if (string::npos == Lpos) {
+            parsedCmd_.clear();
             return;
         }
 
