@@ -11,19 +11,19 @@ class ICmd {
 public:
     static shared_ptr<ICmd> getCmd(const vector<string> &params);
 
-    ICmd(Result* result) :
+    ICmd(ResultPtr result) :
         result_(result) {
     }
 
     virtual bool execute(const shared_ptr<IDataBase> database) = 0;
     virtual string getResult() = 0;
 
-    Result *result_;
+    ResultPtr result_;
 };
 
 class CmdAdd : public ICmd {
 public:
-    CmdAdd(Employee* employee, Result* result) :
+    CmdAdd(EmployeePtr employee, ResultPtr result) :
         ICmd(result), employee_(employee) {
     }
 
@@ -41,12 +41,12 @@ public:
         return result_->toString();
     }
 private:
-    Employee *employee_;
+    EmployeePtr employee_;
 };
 
 class ICmdTarget : public ICmd {
 public:
-    ICmdTarget(ConditionPtr targetCondition, Result *result) :
+    ICmdTarget(ConditionPtr targetCondition, ResultPtr result) :
         ICmd(result), targetCondition_(targetCondition) {
     }
     virtual string getResult() override {
@@ -58,7 +58,7 @@ protected:
 
 class CmdSearch : public ICmdTarget {
 public:
-    CmdSearch(ConditionPtr targetCondition, Result *result) :
+    CmdSearch(ConditionPtr targetCondition, ResultPtr result) :
         ICmdTarget(targetCondition, result) {
     }
 
@@ -75,7 +75,7 @@ public:
 
 class CmdModify : public ICmdTarget {
 public:
-    CmdModify(ConditionPtr targetCondition, ConditionPtr modifyCondition, Result *result) :
+    CmdModify(ConditionPtr targetCondition, ConditionPtr modifyCondition, ResultPtr result) :
         ICmdTarget(targetCondition, result), modifyCondition_(modifyCondition) {
     }
 
@@ -95,7 +95,7 @@ private:
 
 class CmdErase : public ICmdTarget {
 public:
-    CmdErase(ConditionPtr targetCondition, Result *result) :
+    CmdErase(ConditionPtr targetCondition, ResultPtr result) :
         ICmdTarget(targetCondition, result) {
     }
 

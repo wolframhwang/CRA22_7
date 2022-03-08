@@ -41,3 +41,5 @@ struct Employee {
         return result;
     }
 };
+
+using EmployeePtr = shared_ptr<Employee>;
