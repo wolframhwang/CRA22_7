@@ -21,6 +21,7 @@ int main(void)
     while (im->isEndOfFile() == false) {
         vector<string> parsedCmd = im->getParsed();
         shared_ptr<ICmd> cmd = ICmd::getCmd(parsedCmd);
+        if (cmd == nullptr) continue;
 
         cmd->execute(database);
         om->printResult(cmd->result_);

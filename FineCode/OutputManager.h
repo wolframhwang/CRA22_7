@@ -14,9 +14,9 @@ public:
     }
 
     void printResult(Result* result) {
-        outputFileStream_ << result->toString() << endl;
+        outputFileStream_ << result->toString();
     }
-    
+
 private:
     ofstream outputFileStream_;
     string outputFileName_;

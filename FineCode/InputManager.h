@@ -50,12 +50,15 @@ public:
         string::size_type Fpos = line.find_first_not_of(',', 0);
         string::size_type Lpos = line.find_first_of(',', Fpos);
 
+        if (string::npos == Lpos) {
+            return;
+        }
+
         while (string::npos != Fpos || string::npos != Lpos) {
             values.push_back(line.substr(Fpos, Lpos - Fpos));
             Fpos = line.find_first_not_of(',', Lpos);
             Lpos = line.find_first_of(',', Fpos);
         }
-        //values.push_back(" "); // To avoid vector contains nothing
 
         parsedCmd_ = values;
     }
