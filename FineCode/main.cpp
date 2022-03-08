@@ -25,7 +25,6 @@ int main(void)
         cmd->execute(database);
         om->printResult(cmd->result_);
     }
-    om->end();
 
     return 0;
 }
