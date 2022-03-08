@@ -55,7 +55,7 @@ public:
     }
 
     virtual void insert(const Employee& employee) override {
-        employees_.push(&employee);
+        employees_.push(employee);
     }
 
     virtual string toString(void) override {
@@ -66,7 +66,7 @@ public:
         string result;
         for (int index = 0; index < printCount_; index++) {
             auto employee = employees_.top();
-            result += cmd_ + employee->toString() + "\n";
+            result += cmd_ + employee.toString() + "\n";
 
             employees_.pop();
             if (employees_.empty()) {
@@ -78,7 +78,7 @@ public:
 
 private:
     int printCount_;
-    priority_queue<const Employee*, std::vector<const Employee*>, EmployeeCompare> employees_;
+    priority_queue<Employee> employees_;
 };
 
 class ResultNone : public Result {    
