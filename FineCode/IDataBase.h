@@ -45,7 +45,12 @@ public:
             if (targetCondition.isEqual(value)) {
                 result.insert(value);
                 it = employees_.erase(it);
+
             }
+        }
+
+        for (auto& key : keys) {
+            employees_.erase(key);
         }
     }
 

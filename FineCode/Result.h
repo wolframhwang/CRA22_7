@@ -80,3 +80,19 @@ private:
     int printCount_;
     priority_queue<const Employee*, std::vector<const Employee*>, EmployeeCompare> employees_;
 };
+
+class ResultNone : public Result {    
+public:
+    ResultNone(string cmd) : 
+        Result(cmd) {
+    }
+
+    virtual void insert(const Employee& employee) override {
+    }
+
+    virtual string toString(void) override {
+        return "";
+    }
+
+private:
+};
