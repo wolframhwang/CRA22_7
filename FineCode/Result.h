@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <queue>
+#include <memory>
 
 #include "Employee.h"
 
@@ -20,6 +21,7 @@ public:
 protected:
     string cmd_;
 };
+using ResultPtr = shared_ptr<Result>;
 
 class ResultCount : public Result {    
 public:

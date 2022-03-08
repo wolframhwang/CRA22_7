@@ -14,20 +14,20 @@ shared_ptr<ICmd> ICmd::getCmd(const vector<string>& params) {
             ConditionBirthday::isValid(params[8]) &&
             ConditionCerti::isValid(params[9])) {
         
-            Employee *employee = new Employee(vector<string>(params.begin() + 4, params.end()));
-            Result *result = new ResultNone(type);
+            EmployeePtr employee = make_shared<Employee>(vector<string>(params.begin() + 4, params.end()));
+            ResultPtr result = make_shared<ResultNone>(type);
             return make_shared<CmdAdd>(CmdAdd{ employee, result });
         }
         throw std::invalid_argument("getCmd() : ADD");
     }
     else {
         auto targetType = params[4];
-        Result *result = nullptr;
+        ResultPtr result = nullptr;
         if (params[1] == "-p") {
-            result = new ResultTop(type, 5);
+            result = make_shared<ResultTop>(type, 5);
         }
         else {
-            result = new ResultCount(type);
+            result = make_shared<ResultCount>(type);
         }
 
         if (targetType == "name") {

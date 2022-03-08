@@ -13,7 +13,7 @@ public:
         : outputFileName_(outputFileName), outputFileStream_(outputFileName) {
     }
 
-    void printResult(Result* result) {
+    void printResult(ResultPtr result) {
         auto output = result->toString();
         if (output != "") {
             outputFileStream_ << output;
