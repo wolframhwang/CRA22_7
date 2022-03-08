@@ -14,7 +14,10 @@ public:
     }
 
     void printResult(Result* result) {
-        outputFileStream_ << result->toString();
+        auto output = result->toString();
+        if (output != "") {
+            outputFileStream_ << output;
+        }
     }
 
 private:
