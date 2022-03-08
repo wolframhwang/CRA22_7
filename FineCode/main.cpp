@@ -20,12 +20,12 @@ int main(void)
 
     while (im->isEndOfFile() == false) {
         vector<string> parsedCmd = im->getParsed();
-        string queryType = parsedCmd.at(0);
         shared_ptr<ICmd> cmd = ICmd::getCmd(parsedCmd);
 
         cmd->execute(database);
         om->printResult(cmd->result_);
     }
+    om->end();
 
     return 0;
 }
